@@ -25,18 +25,15 @@ namespace Tests {
             player.Enter(game);
             var secondGame = new Game();
 
-            var e = Assert.Throws<InvalidOperationException>(() => player.Enter(secondGame));
-
-            Assert.AreEqual("Нельзя войти во вторую игру", e.Message);
+           Assert.Throws<InvalidOperationException>(() => player.Enter(secondGame)).WithMessage("Нельзя войти во вторую игру");
         }
 
         [Test]
         public void EntersGame_EntersTheSameGame_ThrowInvalidOperationException() {
             player.Enter(game);
 
-            var e = Assert.Throws<InvalidOperationException>(() => player.Enter(game));
-
-            Assert.AreEqual("Ты уже в этой игре!", e.Message);
+            Assert.Throws<InvalidOperationException>(() => player.Enter(game))
+                .WithMessage("Ты уже в этой игре!");
         }
 
         [Test]
@@ -77,8 +74,8 @@ namespace Tests {
 
         [Test]
         public void Exit_PlayerNotInGame_ThrowInvalidOperationException() {
-            var e = Assert.Throws<InvalidOperationException>(player.Exit);
-            Assert.AreEqual("Нельзя просто так выйти из игры не войдя", e.Message);
+            Assert.Throws<InvalidOperationException>(player.Exit)
+                .WithMessage("Нельзя просто так выйти из игры не войдя");
         }
 
         [Test]
@@ -92,14 +89,14 @@ namespace Tests {
 
         [Test]
         public void BuyChips_PlayerBuyNegativeChipsCount_ThrowInvalidOperationException() {
-            var e = Assert.Throws<InvalidOperationException>(() => player.BuyChips(-1));
-            Assert.AreEqual("Нельзя купить количество фишек меньше 1", e.Message);
+            Assert.Throws<InvalidOperationException>(() => player.BuyChips(-1))
+                .WithMessage("Нельзя купить количество фишек меньше 1");
         }
 
         [Test]
         public void BuyChips_PlayerBuyZeroChipsCount_ThrowInvalidOperationException() {
-            var e = Assert.Throws<InvalidOperationException>(() => player.BuyChips(0));
-            Assert.AreEqual("Нельзя купить количество фишек меньше 1", e.Message);
+            Assert.Throws<InvalidOperationException>(() => player.BuyChips(0))
+                .WithMessage("Нельзя купить количество фишек меньше 1");
         }
 
         [Test]
@@ -107,10 +104,40 @@ namespace Tests {
             player.Enter(game);
             player.BuyChips(1);
 
-            player.MakeBet(1);
+            player.MakeBet(1,1);
             bool hasBet = player.HasBet();
 
             Assert.True(hasBet);
         }
+
+        [Test]
+        public void MakeBet_PlayerBetZero_ThrowInvalidOperationException() {
+            player.Enter(game);
+            player.BuyChips(100);
+            
+            Assert.Throws<InvalidOperationException>(() => player.MakeBet(100,0)).WithMessage("Принимаются ставки от 1 до 6");
+        }
+        [Test]
+        public void MakeBet_PlayerBetMoreThenSixChips_ThrowInvalidOperationException(){
+            player.Enter(game);
+            player.BuyChips(100);
+            
+            Assert.Throws<InvalidOperationException>(() => player.MakeBet(100,7)).WithMessage("Принимаются ставки от 1 до 6");
+        }
+
+        [Test]
+        public void MakeBet_BetMoreThetAvailableChips_ThrowInvalidOperationException() {
+            int betAmount = 100;
+            player.Enter(game);
+            player.BuyChips(90);
+
+            Assert.Throws<InvalidOperationException>(() => player.MakeBet(betAmount, 1)).WithMessage("Недостаточно фишек для ставки");
+        }
+    }
+    public static class ExceptionExceptions{
+        public static void WithMessage(this Exception ex, string message)
+        {
+            Assert.AreEqual(message, ex.Message);
+        } 
     }
 }

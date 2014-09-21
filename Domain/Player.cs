@@ -37,8 +37,12 @@ namespace Domain {
            return AvaliableBets;
         }
 
-        public void MakeBet(int bet) {
+        public void MakeBet(int betAmout, int bet) {
+            if (ChipsBallance < betAmout) throw new InvalidOperationException("Недостаточно фишек для ставки");
+            if (bet < 1 || bet > 6) throw new InvalidOperationException("Принимаются ставки от 1 до 6");
             AvaliableBets = true;
         }
+
+       
     }
 }
