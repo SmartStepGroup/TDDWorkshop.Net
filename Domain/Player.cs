@@ -6,6 +6,7 @@ namespace Domain
     {
         private Game activeGame;
         private int chips = 0;
+        private int bet;
 
         public bool isInGame()
         {
@@ -44,7 +45,12 @@ namespace Domain
 
         public int betCount()
         {
-            return 0;
+            return bet;
+        }
+
+        public void makeBet(int i)
+        {
+            bet = i;
         }
     }
 }
