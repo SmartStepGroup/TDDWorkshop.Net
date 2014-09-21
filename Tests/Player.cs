@@ -1,10 +1,10 @@
-﻿using System.Net.Configuration;
+﻿using System;
 
 namespace Tests
 {
     public class Player
     {
-        private Game activeGame = null;
+        private Game activeGame;
 
         public bool isInGame()
         {
@@ -18,6 +18,11 @@ namespace Tests
 
         public void exitGame()
         {
+            if (activeGame == null)
+            {
+                throw new InvalidOperationException("Войдите в игру, прежде чем выходить.");
+            }
+
             activeGame = null;
         }
     }
