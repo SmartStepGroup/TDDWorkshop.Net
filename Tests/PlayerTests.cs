@@ -7,66 +7,72 @@ namespace Tests
     [TestFixture]
     public class PlayerTests
     {
+        protected DiceGame DiceBoard;
+        protected Player Anna;
+
+        private void CreateDefaultBoardAndAnna(int coins)
+        {
+            DiceBoard = new DiceGame();
+            Anna = new Player();
+            Anna.BuyCoins(coins);
+        }
+
         [Test]
         public void EntersGame_SinglePlayer_InGame()
         {
-            var player = new Player();
-            var game = new DiceGame();
-            player.Enter(game);
-            Assert.IsTrue(player.IsIn(game));
+            CreateDefaultBoardAndAnna(0);
+            Anna.Enter(DiceBoard);
+            Assert.IsTrue(Anna.IsIn(DiceBoard));
         }
 
         [Test]
         public void ExitGame_Player_NotInGame()
         {
-            var player = new Player();
-            var game = new DiceGame();
-            player.Enter(game);
-            player.Exit();
-            Assert.IsFalse(player.IsIn(game));
+            CreateDefaultBoardAndAnna(0);
+            Anna.Enter(DiceBoard);
+            Anna.Exit();
+            Assert.IsFalse(Anna.IsIn(DiceBoard));
         }
 
         [Test]
         public void ExitGame_PlayerNotInGame_ThrowsException()
         {
-            var player = new Player();
-            Assert.Throws<InvalidOperationException>(player.Exit);
+            CreateDefaultBoardAndAnna(0);
+            Assert.Throws<InvalidOperationException>(Anna.Exit);
         }
 
         [Test]
         public void EnterGame_PlayerNotInGame_MultiplayerGame()
         {
-            var player = new Player();
-            var player2 = new Player();
-            var game = new DiceGame();
-            player.Enter(game);
-            player2.Enter(game);
-            Assert.IsTrue(player2.IsIn(game));
+            CreateDefaultBoardAndAnna(0);
+            var Belle = new Player();
+            Anna.Enter(DiceBoard);
+            Belle.Enter(DiceBoard);
+            Assert.IsTrue(Belle.IsIn(DiceBoard));
         }
+
         [Test]
         public void CannotEnter_SinglePlayer_TwoGames()
         {
-            var player = new Player();
-            var game1 = new DiceGame();
-            player.Enter(game1);
+            CreateDefaultBoardAndAnna(0);
+            Anna.Enter(DiceBoard);
             var game2 = new DiceGame();
-            Assert.Throws <InvalidOperationException>(()=>player.Enter(game2));
+            Assert.Throws <InvalidOperationException>(()=>Anna.Enter(game2));
 
         }
 
         [Test]
         public void Can_SinglePlayer_BuyCoins()
         {
-            var player = new Player();
-            player.BuyCoins(1);
-            Assert.IsTrue(1 == player.GetAvailableCoins());
+            CreateDefaultBoardAndAnna(0);
+            Anna.BuyCoins(1);
+            Assert.IsTrue(1 == Anna.GetAvailableCoins());
         }
 
         [Test]
         public void MakeBet_DiceGame_Succeeded()
         {
-            var DiceBoard = new DiceGame();
-            var Anna = new Player();
+            CreateDefaultBoardAndAnna(1000);
             Anna.Enter(DiceBoard);
             Anna.MakeBet(1);
             Assert.IsTrue(DiceBoard.BetsBank() == 1);
@@ -75,8 +81,7 @@ namespace Tests
         [Test]
         public void MakeBet_ZeroAmount_ThrowsException()
         {
-            var DiceBoard = new DiceGame();
-            var Anna = new Player();
+            CreateDefaultBoardAndAnna(1000);
             Anna.Enter(DiceBoard);
             Assert.Throws<ArgumentException>(() => Anna.MakeBet(0));
         }
@@ -84,8 +89,7 @@ namespace Tests
         [Test]
         public void MakeBet_Exceed6_ThrowsException()
         {
-            var DiceBoard = new DiceGame();
-            var Anna = new Player();
+            CreateDefaultBoardAndAnna(1000);
             Anna.Enter(DiceBoard);
             Assert.Throws<ArgumentException>(() => Anna.MakeBet(7));
         }
@@ -93,8 +97,7 @@ namespace Tests
         [Test]
         public void MakeBet_RoundBegin_ThrowsException()
         {
-            var DiceBoard = new DiceGame();
-            var Anna = new Player();
+            CreateDefaultBoardAndAnna(1000);
             Anna.Enter(DiceBoard);
             DiceBoard.BeginRound();
             Assert.Throws<InvalidOperationException>(() => Anna.MakeBet(1));
