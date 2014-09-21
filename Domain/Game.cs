@@ -3,9 +3,15 @@
         private int PlayersCount = 0;
 
 
-        public bool AddNewPlayer() {
+        public void AddNewPlayer() {
             this.PlayersCount++;
-            return true;
         }
+
+        public bool HasPlayers() {
+            if (PlayersCount > 0)
+                return true;
+            return false;
+        }
+
     }
 }

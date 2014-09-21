@@ -18,5 +18,7 @@ namespace Tests {
         public void ByDefault_NoPlayersInGame() {
             Assert.IsTrue(game.AddNewPlayer());
         }
+        [Test]
+        public void Started_
     }
 }

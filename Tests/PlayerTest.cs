@@ -7,6 +7,7 @@ namespace Tests {
     public class PlayerTest {
         private Player player;
         private Game game;
+        private const int standartBet = 100;
 
         [SetUp]
         public void Setup() {
@@ -127,11 +128,24 @@ namespace Tests {
 
         [Test]
         public void MakeBet_BetMoreThetAvailableChips_ThrowInvalidOperationException() {
-            int betAmount = 100;
+            int betAmount = 110;
             player.Enter(game);
-            player.BuyChips(90);
+            player.BuyChips(100);
 
             Assert.Throws<InvalidOperationException>(() => player.MakeBet(betAmount, 1)).WithMessage("Недостаточно фишек для ставки");
+        }
+        
+
+        [Test]
+        public void MakeBet_ChangeBetIfGameNoStart_ThrowInvalidOperationException() {
+            int betAmount = 100;
+            player.Enter(game);
+            player.BuyChips(100);
+            player.MakeBet(betAmount,1);
+
+            game.Started();
+
+            Assert.Throws<InvalidOperationException>(() => player.MakeBet(betAmount, 1)).WithMessage("Нельзя менять ставку когда игра запущена");
         }
     }
     public static class ExceptionExceptions{
