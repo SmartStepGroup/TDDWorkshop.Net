@@ -32,5 +32,16 @@ namespace Tests
             var player = new Player();
             Assert.Throws<InvalidOperationException>(player.Exit);
         }
+
+        [Test]
+        public void EnterGame_PlayerNotInGame_MultiplayerGame()
+        {
+            var player = new Player();
+            var player2 = new Player();
+            var game = new Game();
+            player.Enter(game);
+            player2.Enter(game);
+            Assert.IsTrue(player2.IsIn(game));
+        }
     }
 }
