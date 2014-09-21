@@ -13,6 +13,11 @@ namespace Tests
 
         public void enterGame(Game game)
         {
+            if (activeGame != null)
+            {
+                throw new InvalidOperationException("Можно играть только в одну игру");
+            }
+                
             activeGame = game;
         }
 
