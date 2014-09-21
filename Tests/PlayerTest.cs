@@ -5,49 +5,48 @@ using NUnit.Framework;
 namespace Tests
 {
     [TestFixture]
-    internal class PlayerTest
+    internal class PlayerTest : Test
     {
         [Test]
         public void SinglePlayer_EnterInGame_CanEnter()
         {
-            var player = new Player(); //arrange
+            var player = CreatePlayer();
             var game = CreateGame();
 
-            player.EnterInGame(game); //act
+            player.EnterTo(game);
 
-            Assert.IsTrue(player.InGame(game)); // assert
+            Assert.IsTrue(player.HasEntered(game));
         }
 
         [Test]
         public void Player_ExitFromGame_CanExit()
         {
-            var player = CreatePlayer(); //arrange
+            var player = CreatePlayer();
             var game = CreateGame();
-            player.EnterInGame(game);
+            player.EnterTo(game);
 
             player.ExitFromGame();
 
-            Assert.IsFalse(player.InGame(game));
+            Assert.IsFalse(player.HasEntered(game));
         }
 
         [Test]
-        public void PlayerNotInGame_CanNotExitInGame()
+        public void PlayerNotInGame_CanNotExitFromGame()
         {
-
-            var player = CreatePlayer();
+           var player = CreatePlayer();
 
            var ex = Assert.Throws<Exception>(player.ExitFromGame);
-           Assert.AreEqual("Выйти из игры не войдя, может только джедай",ex.Message);
+           Assert.AreEqual("Выйти из игры не войдя, может только джедай", ex.Message);
         }
 
         [Test]
-        public void PlayerInGame_CanNotEnterInGame()
+        public void PlayerInGame_EntersTheSameGame_ThrowsException()
         {
             var player = CreatePlayer();
             var game = CreateGame();
-            player.EnterInGame(game);
-            var ex = Assert.Throws<Exception>(() => player.EnterInGame(game));
+            player.EnterTo(game);
 
+            var ex = Assert.Throws<Exception>(() => player.EnterTo(game));
             Assert.AreEqual("Войти в игру, будучи уже в игре, может только джедай",ex.Message);
         }
 
@@ -59,10 +58,10 @@ namespace Tests
 
             var game = CreateGame();
 
-            player1.EnterInGame(game);
-            player2.EnterInGame(game);
+            player1.EnterTo(game);
+            player2.EnterTo(game);
 
-            Assert.IsTrue(player2.InGame(game));
+            Assert.IsTrue(player2.HasEntered(game));
         }
 
         [Test]
@@ -73,29 +72,10 @@ namespace Tests
 
             var game = CreateGame();
 
-            player1.EnterInGame(game);
-            player2.EnterInGame(game);
+            player1.EnterTo(game);
+            player2.EnterTo(game);
 
-            Assert.IsTrue(player1.InGame(game));
+            Assert.IsTrue(player1.HasEntered(game));
         }
-
-       
-
-
-
-
-
-
-        public Player CreatePlayer()
-        {
-            return new Player();
-        }
-
-        public Game CreateGame()
-        {
-            return new Game();
-        }
-
-
     }
 }

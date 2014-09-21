@@ -5,12 +5,20 @@ using NUnit.Framework;
 namespace Tests
 {
     [TestFixture]
-    internal class GameTest
+    internal class GameTest : Test
     {
-       
-
         [Test]
         public void Game_DoesNotEnterMore6Players()
+        {
+            var game = CreateGame();
+            SixPlayersJoinGame(game);
+            var seventhPlayer = CreatePlayer();
+
+            var ex = Assert.Throws<Exception>(() => seventhPlayer.EnterTo(game));
+            Assert.AreEqual("Этот стол заполнен. Найдите себе другой.", ex.Message);
+        }
+
+        private void SixPlayersJoinGame(Game game)
         {
             var player1 = CreatePlayer();
             var player2 = CreatePlayer();
@@ -18,37 +26,13 @@ namespace Tests
             var player4 = CreatePlayer();
             var player5 = CreatePlayer();
             var player6 = CreatePlayer();
-            var player7 = CreatePlayer();
 
-            var game = CreateGame();
-
-            player1.EnterInGame(game);
-            player2.EnterInGame(game);
-            player3.EnterInGame(game);
-            player4.EnterInGame(game);
-            player5.EnterInGame(game);
-            player6.EnterInGame(game);
-            
-
-           var ex = Assert.Throws<Exception>(() => player7.EnterInGame(game));
-
-           Assert.AreEqual("Этот стол заполнен. Найдите себе другой.", ex.Message);
-            }
-
-
-
-
-
-        public Player CreatePlayer()
-        {
-            return new Player();
+            player1.EnterTo(game);
+            player2.EnterTo(game);
+            player3.EnterTo(game);
+            player4.EnterTo(game);
+            player5.EnterTo(game);
+            player6.EnterTo(game);
         }
-
-        public Game CreateGame()
-        {
-            return new Game();
-        }
-
-
     }
 }

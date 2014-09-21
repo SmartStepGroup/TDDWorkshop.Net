@@ -2,6 +2,11 @@
 {
     public class Game
     {
-        public int _countPlayer = 0;   
+        public int playerCount = 0;
+
+        public void Join(Player player)
+        {
+            playerCount++;
+        }
     }
 }
