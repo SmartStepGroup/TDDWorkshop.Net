@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using NUnit.Framework;
 
 namespace Tests
@@ -67,13 +68,36 @@ namespace Tests
         }
 
         [Test]
-        public void BuyChips_Player_HasChips()
+        public void BuyChips_Player_CanDoBets()
         {
             var player = new Player();
 
             player.BuyChips(1);
 
-            Assert.IsTrue(player.GetChipsCount() > 0);
+            Assert.IsTrue(player.CanDoBets());
+        }
+
+        [Test]
+        public void DoBet_Player_MayWin()
+        {
+            var player = new Player();
+            var game = new Game();
+            player.Enter(game);
+
+            game.DoBet(new Bet(player));
+
+            Assert.IsTrue(player.HasBets());
+        }
+
+        [Test]
+        public void CanBeInGame_Player_DoBet()
+        {
+            var player = new Player();
+            var game = new Game();
+            player.Enter(game);
+            player.Exit();
+
+            Assert.Throws<InvalidOperationException>(() => game.DoBet(new Bet(player))).WithMessage("Нельзя делать ставки не находясь в игре");
         }
     }
 
@@ -114,6 +138,14 @@ namespace Tests
 
             var e = Assert.Throws<InvalidOperationException>(() => player7.Enter(game));
             Assert.AreEqual("В игре число игроков максимальное, юный падован", e.Message);
+        }
+    }
+
+    public static class ExteptionExtensions
+    {
+        public static void WithMessage(this Exception e, string expectedMessage)
+        {
+            Assert.AreEqual(expectedMessage, e.Message);
         }
     }
 }
