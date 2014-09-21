@@ -41,13 +41,13 @@ namespace Domain
         }
 
 
-        public void MakeBet(int amount)
+        public void MakeBet( int roll,int amount)
         {
             if (amount > this.coins)
             {
                throw new ArgumentException("Ставка больше чем у игрока фишек!");
             }
-            activeGame.MakeBet(this, amount);
+            activeGame.MakeBet(this,roll, amount);
             this.coins -= amount;
         }
     }

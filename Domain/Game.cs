@@ -5,11 +5,11 @@ namespace Domain
 {
     public abstract class Game
     {
-        protected Dictionary<Player, int> bets = new Dictionary<Player, int>();
+        protected List<Bet> bets = new List<Bet>();
         protected List<Player> players = new List<Player>();
 
         public abstract bool CanJoin(Player player);
-        public abstract void MakeBet(Player player, int coins);
+        public abstract void MakeBet(Player player, int roll, int coins);
         public abstract void BeginRound();
         public abstract void EndRound();
 
@@ -31,9 +31,9 @@ namespace Domain
         public int BetsBank()
         {
             int summ = 0;
-            foreach (Player player in bets.Keys)
+            foreach (var bet in bets)
             {
-                summ += bets[player];
+                summ += bet.coins;
             }
             return summ;
         }

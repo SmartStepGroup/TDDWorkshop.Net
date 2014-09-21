@@ -74,16 +74,17 @@ namespace Tests
         {
             CreateDefaultBoardAndAnna(1000);
             Anna.Enter(DiceBoard);
-            Anna.MakeBet(1);
+            Anna.MakeBet(3,1);
             Assert.IsTrue(DiceBoard.BetsBank() == 1);
         }
 
         [Test]
-        public void MakeBet_ZeroAmount_ThrowsException()
+        public void MakeBet_ZeroRoll_ThrowsException()
         {
             CreateDefaultBoardAndAnna(1000);
             Anna.Enter(DiceBoard);
-            Assert.Throws<ArgumentException>(() => Anna.MakeBet(0));
+            
+            Assert.Throws<ArgumentException>(() => Anna.MakeBet(0,3));
         }
 
         [Test]
@@ -91,7 +92,8 @@ namespace Tests
         {
             CreateDefaultBoardAndAnna(1000);
             Anna.Enter(DiceBoard);
-            Assert.Throws<ArgumentException>(() => Anna.MakeBet(7));
+      
+            Assert.Throws<ArgumentException>(() => Anna.MakeBet(7,3));
         }
 
         [Test]
@@ -100,7 +102,8 @@ namespace Tests
             CreateDefaultBoardAndAnna(1000);
             Anna.Enter(DiceBoard);
             DiceBoard.BeginRound();
-            Assert.Throws<InvalidOperationException>(() => Anna.MakeBet(1));
+           
+            Assert.Throws<InvalidOperationException>(() => Anna.MakeBet(3,1));
         }
     }
 }
