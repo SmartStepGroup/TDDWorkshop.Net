@@ -136,7 +136,7 @@ namespace Tests {
         }
         
 
-        [Test]
+        /*[Test]
         public void MakeBet_ChangeBetIfGameNoStart_ThrowInvalidOperationException() {
             int betAmount = 100;
             player.Enter(game);
@@ -146,7 +146,7 @@ namespace Tests {
             game.Started();
 
             Assert.Throws<InvalidOperationException>(() => player.MakeBet(betAmount, 1)).WithMessage("Нельзя менять ставку когда игра запущена");
-        }
+        }*/
     }
     public static class ExceptionExceptions{
         public static void WithMessage(this Exception ex, string message)

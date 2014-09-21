@@ -16,9 +16,10 @@ namespace Tests {
 
         [Test]
         public void ByDefault_NoPlayersInGame() {
-            Assert.IsTrue(game.AddNewPlayer());
+            bool hasPlayers = game.HasPlayers();
+            Assert.IsFalse(hasPlayers);
         }
-        [Test]
-        public void Started_
+
+        
     }
 }
