@@ -111,8 +111,8 @@ namespace Tests
         {
             CreateDefaultBoardAndAnna(1000);
             Anna.Enter(DiceBoard);
-            Anna.MakeBet(2);
-            Anna.MakeBet(3);
+            Anna.MakeBet(2,10);
+            Anna.MakeBet(3,20);
             Anna.CancelAllBets();
             Assert.IsFalse(Anna.HasAnyBet());
         }
