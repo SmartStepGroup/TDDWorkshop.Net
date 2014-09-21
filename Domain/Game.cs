@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 
 namespace Domain {
     public class Game {
@@ -6,7 +6,7 @@ namespace Domain {
 
         public void addPlayer() {
             if (playerCount == 6) {
-                throw new InvalidOperationException("Игра не может допустить более 6 игроков");
+                throw new InvalidOperationException("РРіСЂР° РЅРµ РјРѕР¶РµС‚ РґРѕРїСѓСЃС‚РёС‚СЊ Р±РѕР»РµРµ 6 РёРіСЂРѕРєРѕРІ");
             }
             playerCount++;
         }
