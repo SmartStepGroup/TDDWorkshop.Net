@@ -13,6 +13,7 @@ namespace Domain
             if (activeGame != null)
                 throw new InvalidOperationException("Нельзя войти во вторую игру");
            activeGame = game;
+           
         }
 
         public bool IsIn(Game game)

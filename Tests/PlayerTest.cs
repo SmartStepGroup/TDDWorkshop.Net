@@ -66,5 +66,27 @@ namespace Tests
 
             Assert.AreEqual("Ты уже в этой игре!", e.Message);
         }
+
+        [Test]
+        public void EntersGame_WhereHaveAnotherPlayers_InGame()
+        {
+            var secondPlayer = new Player();
+            secondPlayer.Enter(game);
+
+            player.Enter(game);
+
+            Assert.IsTrue(player.IsIn(game));
+        }
+
+        [Test]
+        public void EntersGame_WhereHaveAnotherPlayers_AllPlayersInGame()
+        {
+            var secondPlayer = new Player();
+            secondPlayer.Enter(game);
+
+            player.Enter(game);
+
+            Assert.AreEqual(player.IsIn(game), secondPlayer.IsIn(game));
+        }
     }
 }
