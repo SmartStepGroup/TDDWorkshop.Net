@@ -12,25 +12,20 @@ namespace Tests
             var player = new Player();
             var game = new Game();
 
-            player.Enter();
+            player.Enter(game);
 
             Assert.IsTrue(player.IsIn(game));
         }
-    }
 
-    public class Game
-    {
-    }
-
-    public class Player
-    {
-        public void Enter()
+        [Test]
+        public void ExitGame_Player_NotInGame()
         {
-        }
+            var player = new Player();
+            var game = new Game();
 
-        public bool IsIn(Game game)
-        {
-            return true;
+            player.Exit();
+
+            Assert.IsFalse(player.IsIn(game));
         }
     }
 }
