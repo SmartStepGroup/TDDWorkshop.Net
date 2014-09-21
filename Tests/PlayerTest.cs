@@ -34,7 +34,7 @@ namespace Tests
         public void PlayerNotInGame_CanNotExitFromGame()
         {
            var player = CreatePlayer();
-
+           
            var ex = Assert.Throws<Exception>(player.ExitFromGame);
            Assert.AreEqual("Выйти из игры не войдя, может только джедай", ex.Message);
         }
@@ -76,6 +76,16 @@ namespace Tests
             player2.EnterTo(game);
 
             Assert.IsTrue(player1.HasEntered(game));
+        }
+
+        [Test]
+        public void Player_CanBuyChips()
+        {
+            var captainJackSparrow = CreatePlayer();
+
+            captainJackSparrow.BuyChips(5);
+
+            Assert.AreEqual(5, captainJackSparrow.GetBalance());
         }
     }
 }

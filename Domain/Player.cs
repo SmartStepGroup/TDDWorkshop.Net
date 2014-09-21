@@ -5,6 +5,7 @@ namespace Domain
     public class Player
     {
         private Game _activeGame;
+        private int _balance = 0;
 
         public void EnterTo(Game game)
         {
@@ -12,14 +13,6 @@ namespace Domain
 
             _activeGame = game;
             _activeGame.Join(this);
-        }
-
-        private void ValidateBeforeEnter(Game game)
-        {
-            if (_activeGame != null)
-                throw new Exception("Войти в игру, будучи уже в игре, может только джедай");
-            if (game.playerCount >= 6)
-                throw new Exception("Этот стол заполнен. Найдите себе другой.");
         }
 
         public bool HasEntered(Game game)
@@ -33,6 +26,24 @@ namespace Domain
                 throw new Exception("Выйти из игры не войдя, может только джедай");
 
             _activeGame = null;
+        }
+
+        private void ValidateBeforeEnter(Game game)
+        {
+            if (_activeGame != null)
+                throw new Exception("Войти в игру, будучи уже в игре, может только джедай");
+            if (game.playerCount >= 6)
+                throw new Exception("Этот стол заполнен. Найдите себе другой.");
+        }
+
+        public int GetBalance()
+        {
+            return _balance;
+        }
+
+        public void BuyChips(int count)
+        {
+            _balance += count;
         }
     }
 }
