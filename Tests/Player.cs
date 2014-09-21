@@ -15,5 +15,10 @@ namespace Tests
         {
             activeGame = game;
         }
+
+        public void exitGame()
+        {
+            activeGame = null;
+        }
     }
 }
