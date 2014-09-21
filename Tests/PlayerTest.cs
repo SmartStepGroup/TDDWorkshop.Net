@@ -95,13 +95,22 @@ namespace Tests {
             var e = Assert.Throws<InvalidOperationException>(() => player.BuyChips(-1));
             Assert.AreEqual("Нельзя купить количество фишек меньше 1", e.Message);
         }
+
         [Test]
-        public void BuyChips_PlayerBuyZeroChipsCount_ThrowInvalidOperationException()
-        {
+        public void BuyChips_PlayerBuyZeroChipsCount_ThrowInvalidOperationException() {
             var e = Assert.Throws<InvalidOperationException>(() => player.BuyChips(0));
             Assert.AreEqual("Нельзя купить количество фишек меньше 1", e.Message);
         }
-        
 
+        [Test]
+        public void MakeBet_PlayerBet1Chips_Bet1Chips() {
+            player.Enter(game);
+            player.BuyChips(1);
+
+            player.MakeBet(1);
+            bool hasBet = player.HasBet();
+
+            Assert.True(hasBet);
+        }
     }
 }

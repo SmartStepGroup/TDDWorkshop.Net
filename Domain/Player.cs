@@ -4,6 +4,7 @@ namespace Domain {
     public class Player {
         private Game activeGame;
         private int ChipsBallance;
+        private bool AvaliableBets;
 
         public void Enter(Game game) {
             if (activeGame == game)
@@ -30,6 +31,14 @@ namespace Domain {
 
         public int AvailiableChips() {
             return ChipsBallance;
+        }
+
+        public bool HasBet() {
+           return AvaliableBets;
+        }
+
+        public void MakeBet(int bet) {
+            AvaliableBets = true;
         }
     }
 }
