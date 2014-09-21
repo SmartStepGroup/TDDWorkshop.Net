@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Security.Policy;
 using NUnit.Framework;
 
 namespace Tests
 {
     [TestFixture]
-    public class PlayerTests
+    public class PlayerTests : BaseTest
     {
         [Test]
         public void EnterGame_Player_InGame()
@@ -16,6 +15,18 @@ namespace Tests
             player.Enter(game);
 
             Assert.IsTrue(player.IsIn(game));
+        }
+
+        [Test]
+        public void ByDefaultExitGame_Player_NotInGame()
+        {
+            var player = CreatePlayer();
+            var game = CreateGame();
+            player.Enter(game);
+            player.Exit();
+
+            var e = Assert.Throws<InvalidOperationException>(player.Exit);
+            Assert.AreEqual("Не войдя не можешь ты выйти, юный падован", e.Message);
         }
 
         [Test]
@@ -31,16 +42,16 @@ namespace Tests
         }
 
         [Test]
-        public void ByDefault_ExitGame_Player_NotInGame()
+        public void JoinGameWhereHasPlayer_Player_InGame()
         {
             var player = CreatePlayer();
+            var anotherPlayer = CreatePlayer();
             var game = CreateGame();
 
             player.Enter(game);
-            player.Exit();
+            anotherPlayer.Enter(game);
 
-            var e = Assert.Throws<InvalidOperationException>(player.Exit);
-            Assert.AreEqual("Не войдя не можешь ты выйти, юный падован", e.Message);
+            Assert.IsTrue(anotherPlayer.IsIn(game));
         }
 
         [Test]
@@ -54,21 +65,10 @@ namespace Tests
             var e = Assert.Throws<InvalidOperationException>(() => player.Enter(game));
             Assert.AreEqual("Можешь играть в одну игру ты только, юный падован", e.Message);
         }
+    }
 
-        [Test]
-        public void JoinGameWhereHasPlayer_Player_InGame()
-        {
-            var player = CreatePlayer();
-            var anotherPlayer = CreatePlayer();
-            var game = CreateGame();
-
-            player.Enter(game);
-            anotherPlayer.Enter(game);
-
-            Assert.IsTrue(anotherPlayer.IsIn(game));
-        }
-
-
+    public class BaseTest
+    {
         public Game CreateGame()
         {
             return new Game();
@@ -81,7 +81,7 @@ namespace Tests
     }
 
     [TestFixture]
-    public class GameTests
+    public class GameTests : BaseTest
     {
         [Test]
         public void EnterGame_Game_Max6Players()
@@ -105,16 +105,5 @@ namespace Tests
             var e = Assert.Throws<InvalidOperationException>(() => player7.Enter(game));
             Assert.AreEqual("В игре число игроков максимальное, юный падован", e.Message);
         }
-
-        public Game CreateGame()
-        {
-            return new Game();
-        }
-
-        public Player CreatePlayer()
-        {
-            return new Player();
-        }
     }
-
 }

@@ -8,18 +8,18 @@ namespace Tests
     {
         private Game currentGame;
 
-        public void Enter(Game m_game)
+        public void Enter(Game game)
         {
             if (currentGame != null) throw new InvalidOperationException("Можешь играть в одну игру ты только, юный падован");
-            m_game.CheckMaxPlayers();
+            game.CheckMaxPlayers();
 
-            currentGame = m_game;
-            m_game.Join();
+            currentGame = game;
+            game.Join();
         }
 
-        public bool IsIn(Game m_game)
+        public bool IsIn(Game game)
         {
-            return currentGame == m_game;
+            return currentGame == game;
         }
 
         public void Exit()
