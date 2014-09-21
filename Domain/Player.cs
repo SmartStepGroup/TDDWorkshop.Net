@@ -54,6 +54,11 @@ namespace Domain
             {
                 throw new InvalidOperationException("Чтобы далить ставки нужно чтобы игрок был в игре");    
             }
+            if (i < 1 || i > 6)
+            {
+                throw new InvalidOperationException("Ставка должна быть от 1 до 6");
+            }
+
 
             bet = i;
         }
