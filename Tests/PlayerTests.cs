@@ -53,5 +53,13 @@ namespace Tests
             Assert.Throws <InvalidOperationException>(()=>player.Enter(game2));
 
         }
+
+        [Test]
+        public void Can_SinglePlayer_BuyCoins()
+        {
+            var player = new Player();
+            player.BuyCoins(1);
+            Assert.IsTrue(1==player.GetAvailableCoins());
+        }
     }
 }

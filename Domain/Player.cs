@@ -5,7 +5,9 @@ namespace Domain
     public class Player
     {
         private Game activeGame;
-        public void  Enter(Game game)
+        private int coins;
+
+        public void Enter(Game game)
         {
             if (activeGame != null && activeGame != game)
             {
@@ -26,5 +28,19 @@ namespace Domain
             activeGame.Leave(this);
             activeGame = null;
         }
-    }
+
+
+        public int GetAvailableCoins()
+        {
+            return this.coins;
+        }
+
+        public int BuyCoins (int newCoins)
+        {
+            return this.coins += newCoins;
+        }
+
+
+
+}
 }
