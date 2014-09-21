@@ -56,5 +56,14 @@ namespace Tests {
 
             Assert.IsTrue(secondPlayer.getActiveGame() == game);
         }
+
+        [Test]
+        public void bye11Chips() {
+            Player player = CreatePlayer();
+
+            player.byeChips(11);
+
+            Assert.IsTrue(player.getChipsCount() == 11);
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace Domain {
     public class Player {
         private Game activeGame;
+        private int chipsCount;
 
         public bool inGame(Game game) {
             return true;
@@ -30,5 +31,13 @@ namespace Domain {
             game.removePlayer();
             activeGame = null;
          }
+
+        public int getChipsCount() {
+            return chipsCount;
+        }
+
+        public void byeChips(int count) {
+            chipsCount += count;
+        }
     }
 }
