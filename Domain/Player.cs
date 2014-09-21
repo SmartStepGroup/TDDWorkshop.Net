@@ -1,4 +1,7 @@
-﻿namespace Domain
+﻿using System;
+using System.Linq;
+
+namespace Domain
 {
     public class Player
     {
@@ -26,7 +29,15 @@
 
         public void exit()
         {
-            setActiveGame(null);
+            if (getActiveGame() == null)
+            {
+                setActiveGame(null);
+            }
+            else
+            {
+                throw new InvalidOperationException("Нельзя выйти из игры, если в неё не входил");
+            }
+
         }
     }
 }
