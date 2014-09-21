@@ -7,15 +7,14 @@ namespace Tests {
     public class GameCanNot : Test {
         [Test]
         public void joinSevethPlayerThrowInvalidOperationException() {
-            Game game = sixPlayersToGame();
+            Game game = CreateGameWithSixPlayers();
             Player player7 = CreatePlayer();
 
-
-            var e = Assert.Throws<InvalidOperationException>(() => { player7.setActiveGame(game); });
-            Assert.IsTrue(e.Message.Equals("Игра не может допустить более 6 игроков"));
+            var e = Assert.Throws<InvalidOperationException>(() => player7.setActiveGame(game));
+            Assert.AreEqual("Игра не может допустить более 6 игроков", e.Message);
         }
 
-        private static Game sixPlayersToGame() {
+        private static Game CreateGameWithSixPlayers() {
             Game game = CreateGame();
             Player player1 = CreatePlayer();
             Player player2 = CreatePlayer();
@@ -30,6 +29,7 @@ namespace Tests {
             player4.setActiveGame(game);
             player5.setActiveGame(game);
             player6.setActiveGame(game);
+
             return game;
         }
     }
