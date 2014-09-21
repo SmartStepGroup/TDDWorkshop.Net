@@ -52,11 +52,11 @@ namespace Tests
             player.Enter(game);
 
             var e = Assert.Throws<InvalidOperationException>(() => player.Enter(game));
-            Assert.AreEqual("Можешь играть в одну игру ты только, падован", e.Message);
+            Assert.AreEqual("Можешь играть в одну игру ты только, юный падован", e.Message);
         }
 
         [Test]
-        public void JoinGameWhereHasPlayer_AnotherPlayer_InGame()
+        public void JoinGameWhereHasPlayer_Player_InGame()
         {
             var player = CreatePlayer();
             var anotherPlayer = CreatePlayer();
@@ -68,6 +68,21 @@ namespace Tests
             Assert.IsTrue(anotherPlayer.IsIn(game));
         }
 
+
+        public Game CreateGame()
+        {
+            return new Game();
+        }
+
+        public Player CreatePlayer()
+        {
+            return new Player();
+        }
+    }
+
+    [TestFixture]
+    public class GameTests
+    {
         [Test]
         public void EnterGame_Game_Max6Players()
         {
@@ -88,7 +103,7 @@ namespace Tests
             player6.Enter(game);
 
             var e = Assert.Throws<InvalidOperationException>(() => player7.Enter(game));
-            Assert.AreEqual("В игре число игроков максимальное", e.Message);
+            Assert.AreEqual("В игре число игроков максимальное, юный падован", e.Message);
         }
 
         public Game CreateGame()
@@ -101,4 +116,5 @@ namespace Tests
             return new Player();
         }
     }
+
 }

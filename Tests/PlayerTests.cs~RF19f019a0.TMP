@@ -1,0 +1,59 @@
+﻿using System;
+using System.Security.Policy;
+using NUnit.Framework;
+
+namespace Tests
+{
+    [TestFixture]
+    public class PlayerTests
+    {
+        [Test]
+        public void EnterGame_Player_InGame()
+        {
+            var player = new Player();
+            var game = new Game();
+
+            player.Enter(game);
+
+            Assert.IsTrue(player.IsIn(game));
+        }
+
+        [Test]
+        public void ExitGame_Player_NotInGame()
+        {
+            var player = new Player();
+            var game = new Game();
+
+            player.Enter(game);
+            player.Exit();
+
+            Assert.IsFalse(player.IsIn(game));
+        }
+
+        [Test]
+        public void ByDefault_ExitGame_Player_NotInGame()
+        {
+            var player = new Player();
+            var game = new Game();
+
+            player.Enter(game);
+            player.Exit();
+
+            var e = Assert.Throws<InvalidOperationException>(player.Exit);
+            Assert.AreEqual("Не войдя не можешь ты выйти, юный падован", e.Message);
+        }
+
+        [Test]
+        public void OneGame_Player_InGame()
+        {
+            var player = new Player();
+            var game = new Game();
+
+            player.Enter(game);
+
+            var e = Assert.Throws<InvalidOperationException>(() => player.Enter(game));
+            Assert.AreEqual("Можешь играть в одну игру ты только, падован", e.Message);
+        }
+
+    }
+}
