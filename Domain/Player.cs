@@ -41,6 +41,10 @@ namespace Domain
         }
 
 
+        public void MakeBet(int coins)
+        {
+            activeGame.MakeBet(this, coins);
+        }
+    }
 
-}
 }

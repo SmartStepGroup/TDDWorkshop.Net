@@ -59,7 +59,17 @@ namespace Tests
         {
             var player = new Player();
             player.BuyCoins(1);
-            Assert.IsTrue(1==player.GetAvailableCoins());
+            Assert.IsTrue(1 == player.GetAvailableCoins());
+        }
+        [Test]
+        public void MakeBet_DiceGame_Succeeded()
+        {
+            var diceBoard = new DiceGame();
+            var Anna = new Player();
+            Anna.Enter(diceBoard);
+            Anna.MakeBet(1);
+            Assert.IsTrue(diceBoard.BetsBank() == 1);
+
         }
     }
 }
