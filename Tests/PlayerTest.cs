@@ -80,5 +80,28 @@ namespace Tests {
             var e = Assert.Throws<InvalidOperationException>(player.Exit);
             Assert.AreEqual("Нельзя просто так выйти из игры не войдя", e.Message);
         }
+
+        [Test]
+        public void BuyChips_PlayerBuy1Chips_PlayerHas1Chips() {
+            player.BuyChips(1);
+
+            int playerChipsBallance = player.AvailiableChips();
+
+            Assert.AreEqual(1, playerChipsBallance);
+        }
+
+        [Test]
+        public void BuyChips_PlayerBuyNegativeChipsCount_ThrowInvalidOperationException() {
+            var e = Assert.Throws<InvalidOperationException>(() => player.BuyChips(-1));
+            Assert.AreEqual("Нельзя купить количество фишек меньше 1", e.Message);
+        }
+        [Test]
+        public void BuyChips_PlayerBuyZeroChipsCount_ThrowInvalidOperationException()
+        {
+            var e = Assert.Throws<InvalidOperationException>(() => player.BuyChips(0));
+            Assert.AreEqual("Нельзя купить количество фишек меньше 1", e.Message);
+        }
+        
+
     }
 }

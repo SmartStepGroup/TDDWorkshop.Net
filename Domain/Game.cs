@@ -1,14 +1,11 @@
-﻿namespace Domain
-{
-   public class Game
-   {
-       private int PlayersCount=0;
-       
+﻿namespace Domain {
+    public class Game {
+        private int PlayersCount = 0;
 
-       public bool AddNewPlayer()
-       {
-           this.PlayersCount++;
-           return true;
-       }
-   }
+
+        public bool AddNewPlayer() {
+            this.PlayersCount++;
+            return true;
+        }
+    }
 }
