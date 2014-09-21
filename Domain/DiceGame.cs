@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    class DiceGame
+    public class DiceGame:Game
     {
+
     }
 }
