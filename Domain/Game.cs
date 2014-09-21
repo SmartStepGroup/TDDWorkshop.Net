@@ -3,19 +3,20 @@ using System.Collections.Generic;
 
 namespace Domain
 {
-    public class Game
+    public abstract class Game
     {
-        List<Player> players = new List<Player>();
-        public Dictionary<Player, int> bets = new Dictionary<Player, int>();
+        protected Dictionary<Player, int> bets = new Dictionary<Player, int>();
+        protected List<Player> players = new List<Player>();
 
-        public bool CanJoin(Player player)
-        {
-            return players.Count < 6;
-        }
+        public abstract bool CanJoin(Player player);
+        public abstract void MakeBet(Player player, int coins);
+        public abstract void BeginRound();
+        public abstract void EndRound();
 
         public void Join(Player player)
         {
-            if (!CanJoin(player)) throw new InvalidOperationException("В игре не может быть более " + players.Count + " игроков");
+            if (!CanJoin(player))
+                throw new InvalidOperationException("В игре не может быть более " + players.Count + " игроков");
             players.Add(player);
         }
 
@@ -26,14 +27,7 @@ namespace Domain
                 players.Remove(player);
             }
         }
-
-        public void MakeBet(Player player, int coins)
-        {
-            if (coins <= 0) throw new ArgumentException("Ставка должна быть положительным числом");
-            if (coins > 6) throw new ArgumentException("Ставка не должна превышать 6");
-            bets[player] = coins;
-        }
-
+        
         public int BetsBank()
         {
             int summ = 0;
