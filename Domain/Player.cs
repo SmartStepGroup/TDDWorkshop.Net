@@ -43,9 +43,9 @@ namespace Tests
             chipsCount += count;
         }
 
-        public bool CanDoBets()
+        public bool CanDoBets(int chipsInBet = 0)
         {
-            return chipsCount > 0;
+            return chipsCount >= chipsInBet;
         }
 
         public bool HasBets()

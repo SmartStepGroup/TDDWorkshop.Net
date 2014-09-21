@@ -107,7 +107,34 @@ namespace Tests
             var game = new Game();
             player.Enter(game);
 
-            Assert.Throws<InvalidOperationException>(() => game.DoBet(CreateBet(player, 0))).WithMessage("Значение ставки должно быть от 1 до 6");
+            Assert.Throws<InvalidOperationException>(() => game.DoBet(CreateBet(player, diceValue: 7))).WithMessage("Значение ставки должно быть от 1 до 6");
+        }
+
+        [Test]
+        public void NotEnoughChips_Player_DoBet()
+        {
+            var player = new Player();
+            var game = new Game();
+            player.Enter(game);
+
+            player.BuyChips(3);
+
+            Assert.Throws<InvalidOperationException>(() => game.DoBet(CreateBet(player, diceValue: 1, chipCount: 5))).WithMessage("Ты не можешь фишек больше поставить чем у тебя есть");
+        }
+
+        [Test]
+        public void ChangeBetBegoreStartingGame_Player_ChangeBet()
+        {
+            var player = new Player();
+            var game = new Game();
+            player.Enter(game);
+            Bet bet = CreateBet(player);
+            game.DoBet(bet);
+            game.Start();
+
+            Bet changedBet = CreateBet(player, diceValue:2);
+
+            Assert.Throws<InvalidOperationException>(() => game.ChangeBet(bet.Id, changedBet)).WithMessage("Нельзя поменять ставку в игре которая уже началась");
         }
     }
 
@@ -123,9 +150,9 @@ namespace Tests
             return new Player();
         }
 
-        public Bet CreateBet(Player player, int diceValue = 1)
+        public Bet CreateBet(Player player, int diceValue = 1, int chipCount = 0)
         {
-            return new Bet(player, diceValue);
+            return new Bet(player, diceValue, chipCount);
         }
     }
 
