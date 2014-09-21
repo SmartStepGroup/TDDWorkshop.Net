@@ -102,5 +102,16 @@ namespace Tests
             DiceBoard.BeginRound();
             Assert.Throws<InvalidOperationException>(() => Anna.MakeBet(1));
         }
+
+        [Test]
+        public void CancelAllBets_Succeeded()
+        {
+            CreateDefaultBoardAndAnna(1000);
+            Anna.Enter(DiceBoard);
+            Anna.MakeBet(2);
+            Anna.MakeBet(3);
+            Anna.CancelAllBets();
+            Assert.IsFalse(Anna.HasAnyBet());
+        }
     }
 }

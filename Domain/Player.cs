@@ -50,6 +50,16 @@ namespace Domain
             activeGame.MakeBet(this, amount);
             this.coins -= amount;
         }
+
+        public void CancelAllBets()
+        {
+            
+        }
+
+        public bool HasAnyBet()
+        {
+            return false;
+        }
     }
 
 }
