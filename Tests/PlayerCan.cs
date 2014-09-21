@@ -5,6 +5,14 @@ using NUnit.Framework;
 namespace Tests {
     [TestFixture]
     public class PlayerCan : Test {
+
+        [Test]
+        public void byDefaultPlayerHasNotGame() {
+            Player player = CreatePlayer();
+
+            Assert.IsNull(player.getActiveGame());
+        }
+
         [Test]
         public void EnterToGame() {
             Player player = CreatePlayer();
@@ -18,8 +26,10 @@ namespace Tests {
         [Test]
         public void ExitGame() {
             Player player = CreatePlayer();
+            Game game = CreateGame();
+            player.setActiveGame(game);
 
-            player.exit();
+            player.exit(game);
 
             Assert.IsNull(player.getActiveGame());
         }

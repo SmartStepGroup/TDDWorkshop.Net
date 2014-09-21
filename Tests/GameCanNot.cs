@@ -6,11 +6,9 @@ namespace Tests {
     [TestFixture]
     public class GameCanNot : Test {
         [Test]
-        public void joinSevethPlayerThrowInvalidOperationException()
-        {
+        public void joinSevethPlayerThrowInvalidOperationException() {
             Game game = sixPlayersToGame();
             Player player7 = CreatePlayer();
-
 
 
             var e = Assert.Throws<InvalidOperationException>(() => { player7.setActiveGame(game); });

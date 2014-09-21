@@ -50,6 +50,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="GameCanNot.cs" />
+    <Compile Include="PlayerTest.cs" />
     <Compile Include="PlayerCanNot.cs" />
     <Compile Include="PlayerCan.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

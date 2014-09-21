@@ -12,6 +12,7 @@ namespace Domain {
             if (getActiveGame() != null) {
                 throw new InvalidOperationException("Можно играть только в одну игру одновременно");
             }
+            game.addPlayer();
             activeGame = game;
         }
 
@@ -22,13 +23,12 @@ namespace Domain {
         public void enter(Game game) {
         }
 
-        public void exit() {
+        public void exit(Game game) {
             if (getActiveGame() == null) {
-                setActiveGame(null);
-            }
-            else {
                 throw new InvalidOperationException("Нельзя выйти из игры, если в неё не входил");
             }
-        }
+            game.removePlayer();
+            activeGame = null;
+         }
     }
 }

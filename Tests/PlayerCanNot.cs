@@ -8,11 +8,8 @@ namespace Tests {
         [Test]
         public void ExitGameWhenHasNotActiveGame() {
             Player player = CreatePlayer();
-            Game game = CreateGame();
 
-            player.setActiveGame(game);
-
-            var e = Assert.Throws<InvalidOperationException>(() => { player.exit(); });
+            var e = Assert.Throws<InvalidOperationException>(() => { player.exit(new Game()); });
             Assert.IsTrue(e.Message.Equals("Нельзя выйти из игры, если в неё не входил"));
         }
     }
