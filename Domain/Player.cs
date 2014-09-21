@@ -23,6 +23,7 @@ namespace Domain
         public void Exit()
         {
             if (activeGame == null) throw new InvalidOperationException("Нельзя выйти из игры, не входя в неё");
+            activeGame.Leave(this);
             activeGame = null;
         }
     }

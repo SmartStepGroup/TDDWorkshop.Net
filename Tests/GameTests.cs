@@ -8,15 +8,15 @@ namespace Tests
     public class GameTests
     {
         [Test]
-        public void Game_Players_CountNotExceeded6()
+        public void Players_Count_NotExceeded6()
         {
             var game = new Game();
             var player = new Player();
-            Assert.IsTrue(game.CanJoinPlayer(player));
+            Assert.IsTrue(game.CanJoin(player));
         }
 
         [Test]
-        public void Game_Players_Excceded6ThrowsException()
+        public void Players_Exceeded6_ThrowsException()
         {
             var game = new Game();
             for (int i = 1; i <= 6; i++)
