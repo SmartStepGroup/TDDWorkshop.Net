@@ -43,5 +43,13 @@ namespace Tests
             player2.Enter(game);
             Assert.IsTrue(player2.IsIn(game));
         }
+
+        public void CannotEnter_SinglePlayer_TwoGames()
+        {
+            var player = new Player();
+            var game = new Game();
+            Assert.Throws <InvalidOperationException>(()=>player.Enter(game));
+
+        }
     }
 }

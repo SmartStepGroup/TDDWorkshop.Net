@@ -5,8 +5,12 @@ namespace Domain
     public class Player
     {
         private Game activeGame;
-        public void Enter(Game game)
+        public void  Enter(Game game)
         {
+            if (activeGame != null)
+            {
+                throw new InvalidOperationException("Игрок может быть только в одной игре!!!");
+            }
             activeGame = game;
         }
 
