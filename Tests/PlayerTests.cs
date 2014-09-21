@@ -53,5 +53,15 @@ namespace Tests
             Assert.Throws <InvalidOperationException>(()=>player.Enter(game2));
 
         }
+
+        [Test]
+        public void MakeBet_DiceGame_Succeeded()
+        {
+            var diceBoard = new DiceGame();
+            var Anna = new Player();
+            Anna.Enter(diceBoard);
+            Anna.MakeBet(1);
+            Assert.IsTrue(diceBoard.BetsBank() == 1);
+        }
     }
 }

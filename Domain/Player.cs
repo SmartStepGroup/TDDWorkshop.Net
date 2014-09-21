@@ -26,5 +26,10 @@ namespace Domain
             activeGame.Leave(this);
             activeGame = null;
         }
+
+        public void MakeBet(int coins)
+        {
+            activeGame.MakeBet(this, coins);
+        }
     }
 }
