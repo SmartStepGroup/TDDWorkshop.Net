@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Domain
 {
@@ -6,6 +7,7 @@ namespace Domain
     {
         private Game _activeGame;
         private int _balance = 0;
+        private List<Bet> _activeBet = new List<Bet>();
 
         public void EnterTo(Game game)
         {
@@ -44,6 +46,37 @@ namespace Domain
         public void BuyChips(int count)
         {
             _balance += count;
+        }
+
+        public void Do(Bet bet)
+        {
+            ValidateDoBet(bet);
+            _activeBet.Add(bet);
+        }
+
+        private void ValidateDoBet(Bet bet)
+        {
+            if (bet.GetSize() > _balance)
+                throw new InvalidOperationException("Баланс недостаточен.");
+            if (bet.GetScore() < 1)
+                throw new InvalidOperationException("Ставка не может быть меньше 1");
+            if (bet.GetScore() > 6)
+                throw new InvalidOperationException("Ставка не может быть больше 6");
+        }
+
+        public Game GetGame()
+        {
+            return _activeGame;
+        }
+
+        public void DeleteBet()
+        {
+            _activeBet = null;
+        }
+
+        public List<Bet> GetListBet()
+        {
+            return _activeBet;
         }
     }
 }

@@ -87,5 +87,93 @@ namespace Tests
 
             Assert.AreEqual(5, captainJackSparrow.GetBalance());
         }
+
+        [Test]
+        public void Player_CanBet_NotThrowsException()
+        {
+            var captainJackSparrow = CreatePlayer();
+            captainJackSparrow.BuyChips(50);
+            var game = new Game();
+            captainJackSparrow.EnterTo(game);
+            var bet = new Bet(14,6);
+
+            Assert.DoesNotThrow(() => captainJackSparrow.Do(bet));
+        }
+
+        [Test]
+        public void Player_CanNotBetIfBalanceLessBet_ThrowsException()
+        {
+            var captainJackSparrow = CreatePlayer();
+            captainJackSparrow.BuyChips(50);
+            var game = CreateGame();
+            captainJackSparrow.EnterTo(game);
+            var bet = new Bet(55, 6);
+
+            var ex = Assert.Throws<InvalidOperationException>(() => captainJackSparrow.Do(bet));
+            Assert.AreEqual("Баланс недостаточен.", ex.Message);
+        }
+
+        [Test]
+        public void Player_CanNotWrongBetLessOne_ThrowsException()
+        {
+            var captainJackSparrow = CreatePlayerWithBet(25, 0);
+            Bet bet = captainJackSparrow.GetListBet()[0];
+            var ex = Assert.Throws<InvalidOperationException>(() => captainJackSparrow.Do(bet));
+            Assert.AreEqual("Ставка не может быть меньше 1", ex.Message);
+        }
+
+        private Player CreatePlayerWithBet(int size, int score)
+        {
+            var captainJackSparrow = CreatePlayer();
+            captainJackSparrow.BuyChips(50);
+            var game = CreateGame();
+            captainJackSparrow.EnterTo(game);
+            var bet = new Bet(size, score);
+            return captainJackSparrow;
+        }
+
+        [Test]
+        public void Player_CanNotWrongBetMoreSix_ThrowsException()
+        {
+            var captainJackSparrow = CreatePlayerWithBet(25, 7);
+            Bet bet = captainJackSparrow.GetListBet()[0];
+            var ex = Assert.Throws<InvalidOperationException>(() => captainJackSparrow.Do(bet));
+            Assert.AreEqual("Ставка не может быть больше 6", ex.Message);
+        }
+
+        [Test]
+        public void Player_CanChangeBetBeforeGameStarted()
+        {
+            var captainJackSparrow = CreatePlayerWithBet(25, 5);
+            var game = captainJackSparrow.GetGame();
+            captainJackSparrow.GetListBet()[0].Change(56, 1, game);
+            game.Start();
+
+            Assert.AreEqual(1, captainJackSparrow.GetListBet()[0].GetScore());
+        }
+
+        [Test]
+        public void Player_CanCancelledBetBeforeGameStarted()
+        {
+            var captainJackSparrow = CreatePlayerWithBet(25, 5);
+            var game = captainJackSparrow.GetGame();
+
+            captainJackSparrow.DeleteBet();
+            game.Start();
+
+            Assert.Null(captainJackSparrow.GetListBet());
+        }
+
+        [Test]
+        public void Player_CanAddSomeBet()
+        {
+            var captainJackSparrow = CreatePlayerWithBet(25, 5);
+            var game = captainJackSparrow.GetGame();
+
+            game.Start();
+
+            Assert.Null(captainJackSparrow.GetListBet());
+        }
+
     }
 }
