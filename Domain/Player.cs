@@ -1,10 +1,11 @@
 ﻿using System;
 
-namespace Tests
+namespace Domain
 {
     public class Player
     {
         private Game activeGame;
+        private int chips = 0;
 
         public bool isInGame()
         {
@@ -29,6 +30,21 @@ namespace Tests
             }
 
             activeGame = null;
+        }
+
+        public void buyChips(int i)
+        {
+            chips = i;
+        }
+
+        public int chipsCount()
+        {
+            return chips;
+        }
+
+        public int betCount()
+        {
+            return 0;
         }
     }
 }

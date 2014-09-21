@@ -49,8 +49,6 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Game.cs" />
-    <Compile Include="Player.cs" />
     <Compile Include="PlayerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
