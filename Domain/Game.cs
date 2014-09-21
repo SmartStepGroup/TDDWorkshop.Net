@@ -29,6 +29,8 @@ namespace Tests
         public void DoBet(Bet bet)
         {
             if (!bet.GetOwner().IsIn(this)) throw new InvalidOperationException("Нельзя делать ставки не находясь в игре");
+            if (bet.DiceValue < 1 || bet.DiceValue > 6) throw new InvalidOperationException("Значение ставки должно быть от 1 до 6");
+
             bets.Add(bet);
         }
 

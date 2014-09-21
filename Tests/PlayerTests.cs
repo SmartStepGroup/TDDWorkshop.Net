@@ -84,7 +84,7 @@ namespace Tests
             var game = new Game();
             player.Enter(game);
 
-            game.DoBet(new Bet(player));
+            game.DoBet(CreateBet(player));
 
             Assert.IsTrue(player.HasBets());
         }
@@ -97,7 +97,17 @@ namespace Tests
             player.Enter(game);
             player.Exit();
 
-            Assert.Throws<InvalidOperationException>(() => game.DoBet(new Bet(player))).WithMessage("Нельзя делать ставки не находясь в игре");
+            Assert.Throws<InvalidOperationException>(() => game.DoBet(CreateBet(player))).WithMessage("Нельзя делать ставки не находясь в игре");
+        }
+
+        [Test]
+        public void DoRightBets_Player_DoBet()
+        {
+            var player = new Player();
+            var game = new Game();
+            player.Enter(game);
+
+            Assert.Throws<InvalidOperationException>(() => game.DoBet(CreateBet(player, 0))).WithMessage("Значение ставки должно быть от 1 до 6");
         }
     }
 
@@ -111,6 +121,11 @@ namespace Tests
         public Player CreatePlayer()
         {
             return new Player();
+        }
+
+        public Bet CreateBet(Player player, int diceValue = 1)
+        {
+            return new Bet(player, diceValue);
         }
     }
 
