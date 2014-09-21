@@ -61,15 +61,33 @@ namespace Tests
             player.BuyCoins(1);
             Assert.IsTrue(1 == player.GetAvailableCoins());
         }
+
         [Test]
         public void MakeBet_DiceGame_Succeeded()
         {
-            var diceBoard = new DiceGame();
+            var DiceBoard = new DiceGame();
             var Anna = new Player();
-            Anna.Enter(diceBoard);
+            Anna.Enter(DiceBoard);
             Anna.MakeBet(1);
-            Assert.IsTrue(diceBoard.BetsBank() == 1);
+            Assert.IsTrue(DiceBoard.BetsBank() == 1);
+        }
 
+        [Test]
+        public void MakeBet_NegativeAmount_ThrowsException()
+        {
+            var DiceBoard = new DiceGame();
+            var Anna = new Player();
+            Anna.Enter(DiceBoard);
+            Assert.Throws<ArgumentException>(() => Anna.MakeBet(-1));
+        }
+
+        [Test]
+        public void MakeBet_Exceed6_ThrowsException()
+        {
+            var DiceBoard = new DiceGame();
+            var Anna = new Player();
+            Anna.Enter(DiceBoard);
+            Assert.Throws<ArgumentException>(() => Anna.MakeBet(7));
         }
     }
 }

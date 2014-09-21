@@ -29,6 +29,8 @@ namespace Domain
 
         public void MakeBet(Player player, int coins)
         {
+            if (coins <= 0) throw new ArgumentException("Ставка должна быть положительным числом");
+            if (coins > 6) throw new ArgumentException("Ставка не должна превышать 6");
             bets[player] = coins;
         }
 
