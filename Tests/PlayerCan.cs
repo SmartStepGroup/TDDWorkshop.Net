@@ -1,14 +1,12 @@
-﻿using Domain;
+﻿using System;
+using Domain;
 using NUnit.Framework;
 
-namespace Tests
-{
+namespace Tests {
     [TestFixture]
-    public class PlayerCan
-    {
+    public class PlayerCan : Test {
         [Test]
-        public void EnterToGame()
-        {
+        public void EnterToGame() {
             Player player = CreatePlayer();
             Game game = CreateGame();
 
@@ -18,8 +16,7 @@ namespace Tests
         }
 
         [Test]
-        public void ExitGame()
-        {
+        public void ExitGame() {
             Player player = CreatePlayer();
 
             player.exit();
@@ -27,14 +24,27 @@ namespace Tests
             Assert.IsNull(player.getActiveGame());
         }
 
-        private static Game CreateGame()
-        {
-            return new Game();
+        [Test]
+        public void playSingleGame() {
+            Player player = CreatePlayer();
+            Game firstGame = CreateGame();
+            Game secondGame = CreateGame();
+            player.setActiveGame(firstGame);
+
+            var e = Assert.Throws<InvalidOperationException>(() => { player.setActiveGame(secondGame); });
+            Assert.IsTrue(e.Message.Equals("Можно играть только в одну игру одновременно"));
         }
 
-        private static Player CreatePlayer()
-        {
-            return new Player();
+        [Test]
+        public void playWhenOthersPlayerInGame() {
+            Game game = CreateGame();
+            Player firstPlayer = CreatePlayer();
+            Player secondPlayer = CreatePlayer();
+
+            firstPlayer.setActiveGame(game);
+            secondPlayer.setActiveGame(game);
+
+            Assert.IsTrue(secondPlayer.getActiveGame() == game);
         }
     }
 }
