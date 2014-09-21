@@ -7,7 +7,7 @@ namespace Domain
         private Game activeGame;
         public void  Enter(Game game)
         {
-            if (activeGame != null)
+            if (activeGame != null && activeGame != game)
             {
                 throw new InvalidOperationException("Игрок может быть только в одной игре!!!");
             }
