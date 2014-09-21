@@ -50,6 +50,11 @@ namespace Domain
 
         public void makeBet(int i)
         {
+            if (activeGame == null)
+            {
+                throw new InvalidOperationException("Чтобы далить ставки нужно чтобы игрок был в игре");    
+            }
+
             bet = i;
         }
     }
