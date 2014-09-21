@@ -2,6 +2,13 @@
 {
    public class Game
    {
-       public int PlayersCount=0;
+       private int PlayersCount=0;
+       
+
+       public bool AddNewPlayer()
+       {
+           this.PlayersCount++;
+           return true;
+       }
    }
 }

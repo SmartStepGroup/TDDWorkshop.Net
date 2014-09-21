@@ -18,8 +18,20 @@ namespace Tests
         [Test]
         public void ByDefault_NoPlayersInGame()
         {
-            Assert.AreEqual(0, game.PlayersCount);
+            Assert.IsTrue(game.AddNewPlayer());
         }
+
+        /*[Test]
+        public void EntersGame_AddNewPlayer_PlayersCountPlusOne()
+        {
+            
+        }
+
+        [Test]
+        public void SevenPlayersInOneGame_ForSeventhPlayerThrowInvalidOperetionException()
+        {
+            
+        }*/
         
         
     }
