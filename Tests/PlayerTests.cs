@@ -67,6 +67,7 @@ namespace Tests
         {
             var DiceBoard = new DiceGame();
             var Anna = new Player();
+            Anna.BuyCoins(1);
             Anna.Enter(DiceBoard);
             Anna.MakeBet(1);
             Assert.IsTrue(DiceBoard.BetsBank() == 1);
@@ -88,6 +89,16 @@ namespace Tests
             var Anna = new Player();
             Anna.Enter(DiceBoard);
             Assert.Throws<ArgumentException>(() => Anna.MakeBet(7));
+        }
+
+        [Test]
+        public void MakeBetGreaterThanHaveCoins_Player_TrowsExpection()
+        {
+            var diceGame = new DiceGame();
+            var player = new Player();
+            player.BuyCoins(1000);
+
+            Assert.Throws<ArgumentException>(() => player.MakeBet(2000));
         }
     }
 }
