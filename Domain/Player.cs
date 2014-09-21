@@ -12,7 +12,7 @@ namespace Domain
                 throw new InvalidOperationException("Игрок может быть только в одной игре!!!");
             }
             activeGame = game;
-            game.JoinPlayer(this);
+            game.Join(this);
         }
 
         public bool IsIn(Game game)
