@@ -65,6 +65,16 @@ namespace Tests
             var e = Assert.Throws<InvalidOperationException>(() => player.Enter(game));
             Assert.AreEqual("Можешь играть в одну игру ты только, юный падован", e.Message);
         }
+
+        [Test]
+        public void BuyChips_Player_HasChips()
+        {
+            var player = new Player();
+
+            player.BuyChips(1);
+
+            Assert.IsTrue(player.GetChipsCount() > 0);
+        }
     }
 
     public class BaseTest

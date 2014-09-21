@@ -7,6 +7,7 @@ namespace Tests
     public class Player
     {
         private Game currentGame;
+        private int chipsCount;
 
         public void Enter(Game game)
         {
@@ -27,6 +28,16 @@ namespace Tests
             if (currentGame == null) throw new InvalidOperationException("Не войдя не можешь ты выйти, юный падован");
             currentGame.Leave();
             currentGame = null;
+        }
+
+        public void BuyChips(int count)
+        {
+            chipsCount += count;
+        }
+
+        public decimal GetChipsCount()
+        {
+            return chipsCount;
         }
     }
 
