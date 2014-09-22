@@ -52,7 +52,7 @@ namespace Tests {
 
         [Test]
         public void bye11Chips() {
-            Player player = Create.Player.With(11);
+            Player player = Create.Player.With(cheaps: 11);
 
             player.byeChips(11);
 

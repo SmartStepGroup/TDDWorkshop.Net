@@ -34,7 +34,7 @@ namespace Tests {
             return this;
         }
 
-        public PlayerFather With(int cheaps)
+        public PlayerFather With(int cheaps = 5)
         {
             var player = new Player();
             player.byeChips(cheaps);
