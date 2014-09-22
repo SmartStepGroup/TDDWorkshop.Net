@@ -47,6 +47,7 @@ namespace Tests {
             Player firstPlayer = Create.Player.In(game);
             Player secondPlayer = Create.Player.In(game);
 
+
             Assert.IsTrue(secondPlayer.getActiveGame() == game);
         }
 
@@ -54,9 +55,7 @@ namespace Tests {
         public void bye11Chips() {
             Player player = Create.Player.With(cheaps: 11);
 
-            player.byeChips(11);
-
-            Assert.IsTrue(player.getChipsCount() == 11);
+            Assert.AreEqual(11, player.getChipsCount());
         }
 
         protected Father Create = new Father();
