@@ -11,13 +11,15 @@ namespace Tests
     {
         public int DiceValue;
         public int ChipsCount;
+        public Guid betId;
 
         public Bet()
         {
-            
+            betId = new Guid();
         }
         public Bet(int diceValue, int chipsCount)
         {
+            betId = new Guid();
             DiceValue = diceValue;
             ChipsCount = chipsCount;
         }

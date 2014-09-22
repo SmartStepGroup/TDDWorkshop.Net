@@ -53,6 +53,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BaseTest.cs" />
+    <Compile Include="CasinoTests.cs" />
+    <Compile Include="DSL\CasinoFather.cs" />
     <Compile Include="DSL\Father.cs" />
     <Compile Include="DSL\GameFather.cs" />
     <Compile Include="DSL\PlayerFather.cs" />

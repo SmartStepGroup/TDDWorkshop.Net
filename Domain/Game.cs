@@ -32,20 +32,25 @@ namespace Tests
             if (playerCount == 6) throw new InvalidOperationException("В игре число игроков максимальное, юный падован"); ;
         }
 
-        public void Start(Player player = null)
+        public void Start(Player player = null, Casino casino = null)
         {
             isStarted = true;
             if (player == null) return;
             if (!player.HasBets()) throw new InvalidOperationException("Нельзя начать игру без ставок");
+            if (casino == null) throw new InvalidOperationException("Нельзя начать игру без казино");
             if (dice == null) return;
             int score = dice.Roll();
-            if (player.GetBet().DiceValue == score)
+
+            foreach (var bet in player.GetBets())
             {
-                player.BuyChips(player.GetBet().ChipsCount * 6);
-            }
-            else
-            {
-                //player.BuyChips(-player.GetBet().ChipsCount);                
+                if (bet.DiceValue == score)
+                {
+                    player.BuyChips(bet.ChipsCount * 6);
+                }
+                else
+                {
+                    casino.AddWinChips(bet.ChipsCount);
+                }                
             }
         }
 

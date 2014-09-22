@@ -4,5 +4,6 @@ namespace Tests.DSL
     {
         public GameFather Game = new GameFather();
         public PlayerFather Player = new PlayerFather();
+        public CasinoFather Casino = new CasinoFather();
     }
 }

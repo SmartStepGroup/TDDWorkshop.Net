@@ -11,7 +11,7 @@ namespace Tests
         private Game currentGame;
         private int chipsCount;
         public Guid Id;
-        private Bet bet;
+        private List<Bet> bets = new List<Bet>();
 
         public Player()
         {
@@ -53,7 +53,7 @@ namespace Tests
 
         public bool HasBets()
         {
-            return bet != null;
+            return bets.Count > 0;
         }
 
         public void DoBet(Bet m_bet)
@@ -61,17 +61,25 @@ namespace Tests
             if (currentGame == null) throw new InvalidOperationException("Нельзя делать ставки не находясь в игре");
             if (m_bet.DiceValue < 1 || m_bet.DiceValue > 6) throw new InvalidOperationException("Значение ставки должно быть от 1 до 6");
             if (!CanDoBets(m_bet.ChipsCount)) throw new InvalidOperationException("Ты не можешь фишек больше поставить чем у тебя есть");
-            bet = m_bet;
+            bets.Add(m_bet);
             chipsCount -= m_bet.ChipsCount;
         }
 
-        public void ChangeBet(Bet changedBet)
+        public void ChangeBet(Guid betId, Bet changedBet)
         {
             if (currentGame.isStarted)
             {
                 throw new InvalidOperationException("Нельзя поменять ставку в игре которая уже началась");
             }
-            bet = changedBet;
+            for (int i = 0; i < bets.Count; i++)
+            {
+                if (bets[i].betId == changedBet.betId)
+                {
+                    bets[i] = changedBet;
+                    return;
+                }
+            }
+            
         }
 
         public int AvailibleChipsCount()
@@ -79,9 +87,9 @@ namespace Tests
             return chipsCount;
         }
 
-        public Bet GetBet()
+        public List<Bet> GetBets()
         {
-            return bet;
+            return bets;
         }
     }
 }

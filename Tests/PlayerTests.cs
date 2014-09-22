@@ -128,10 +128,11 @@ namespace Tests
         public void ChangeBetBegoreStartingGame_Player_ChangeBet()
         {
             Game game = Create.Game.Started();
-            Player player = Create.Player.In(game).WithChips(100.Chips()).WithBet(CreateBet());
+            Bet startedBet = CreateBet();
+            Player player = Create.Player.In(game).WithChips(100.Chips()).WithBet(startedBet);
             Bet changedBet = 50.Chips().On(1);
 
-            Assert.Throws<InvalidOperationException>(() => player.ChangeBet(changedBet)).WithMessage("Нельзя поменять ставку в игре которая уже началась");
+            Assert.Throws<InvalidOperationException>(() => player.ChangeBet(startedBet.betId,changedBet)).WithMessage("Нельзя поменять ставку в игре которая уже началась");
         }
 
         [Test]
@@ -139,8 +140,9 @@ namespace Tests
         {
             Game game = Create.Game.WithLuckyScore(6);
             Player player = Create.Player.In(game).WithChips(100).WithBet(80.Chips().On(1));
+            Casino casino = Create.Casino;
 
-            game.Start(player);
+            game.Start(player, casino);
 
             Assert.AreEqual(20, player.AvailibleChipsCount());
         }
@@ -150,10 +152,27 @@ namespace Tests
         {
             Game game = Create.Game.WithLuckyScore(6);
             Player player = Create.Player.In(game).WithChips(100).WithBet(40.Chips().On(6));
+            Casino casino = Create.Casino;
 
-            game.Start(player);
+            game.Start(player, casino);
 
             Assert.AreEqual(300, player.AvailibleChipsCount());
+        }
+
+        [Test]
+        public void DoSomeBets_Player_GetReward()
+        {
+            Game game = Create.Game.WithLuckyScore(6);
+            Player player = Create.Player
+                .In(game)
+                .WithChips(100)
+                .WithBet(10.Chips().On(6))
+                .WithBet(30.Chips().On(3));
+            Casino casino = Create.Casino;
+
+            game.Start(player, casino);
+
+            Assert.AreEqual(120, player.AvailibleChipsCount());            
         }
     }
 
