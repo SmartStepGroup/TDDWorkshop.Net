@@ -12,10 +12,17 @@ namespace Tests
 
         private void CreateDefaultBoardAndAnna(int coins)
         {
-            DiceBoard = new DiceGame();
+            /*DiceBoard =new DiceGame();
             Anna = new Player();
-            Anna.BuyCoins(coins);
+            Anna.BuyCoins(coins);*/
+
+            DiceBoard = Create.DiceGame;
+            Anna = Create.Player
+                .BuyCoins(coins);
+                
         }
+
+        protected Builder Create = new Builder();
 
         [Test]
         public void EntersGame_SinglePlayer_InGame()
@@ -73,6 +80,7 @@ namespace Tests
         public void MakeBet_DiceGame_Succeeded()
         {
             CreateDefaultBoardAndAnna(1000);
+            DiceBoard.Reset();
             Anna.Enter(DiceBoard);
             Anna.MakeBet(3,1);
             Assert.IsTrue(DiceBoard.BetsBank() == 1);
@@ -116,5 +124,54 @@ namespace Tests
             Anna.CancelAllBets();
             Assert.IsFalse(Anna.HasAnyBet());
         }
+
+        
     }
+
+    public class Builder
+    {
+        public DiceGameBuilder DiceGame { get; private set; }
+        public PlayerBuilder Player { get; private set; }
+
+        public Builder()
+        {
+            DiceGame = new DiceGameBuilder();
+            Player = new PlayerBuilder();
+        }
+    }
+
+    public class PlayerBuilder
+    {
+        private  Player player = new Player();
+        private int coins = 0;
+        public PlayerBuilder BuyCoins(int new_coins)
+        {
+            this.coins += new_coins;
+            return this;
+        }
+        public static implicit operator Player(PlayerBuilder builder)
+        {
+            if (builder.coins > 0)
+            {
+                builder.player.BuyCoins(builder.coins);
+            }
+            return builder.player;
+
+        }
+
+    }
+
+    public class DiceGameBuilder
+    {
+        private DiceGame game = new DiceGame();
+        public static implicit operator DiceGame(DiceGameBuilder builder)
+        {
+            return builder.game;
+        }
+
+      
+
+        
+    }
+
 }

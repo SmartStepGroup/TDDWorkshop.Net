@@ -14,6 +14,11 @@ namespace Domain
             return players.Count < 6;
         }
 
+        public override void Reset()
+        {
+            players.Clear();
+            bets.Clear();
+        }
         public override void MakeBet(Player player, int roll,int coins)
         {
             if (roll <= 0) throw new ArgumentException("Ставка должна быть положительным числом");
