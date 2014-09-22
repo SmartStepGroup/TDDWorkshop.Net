@@ -133,8 +133,6 @@ namespace Tests
 
             Assert.Throws<InvalidOperationException>(() => player.ChangeBet(changedBet)).WithMessage("Нельзя поменять ставку в игре которая уже началась");
         }
-
-        private static Father Create;
     }
 
 

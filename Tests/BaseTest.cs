@@ -1,7 +1,10 @@
+using Tests.DSL;
+
 namespace Tests
 {
     public class BaseTest
     {
+        protected static Father Create;
         public Game CreateGame()
         {
             return new Game();
