@@ -11,10 +11,13 @@ namespace Tests
         private Game currentGame;
         private int chipsCount;
         public Guid Id;
+        private Bet bet;
 
         public Player()
         {
             Id = new Guid();
+            currentGame = null;
+            chipsCount = 0;
         }
 
         public void Enter(Game game)
@@ -50,12 +53,24 @@ namespace Tests
 
         public bool HasBets()
         {
-            List<Bet> bets = currentGame.GetBets();
-            foreach (var bet in bets)
+            return bet != null;
+        }
+
+        public void DoBet(Bet m_bet)
+        {
+            if (currentGame == null) throw new InvalidOperationException("Нельзя делать ставки не находясь в игре");
+            if (m_bet.DiceValue < 1 || m_bet.DiceValue > 6) throw new InvalidOperationException("Значение ставки должно быть от 1 до 6");
+            if (!CanDoBets(m_bet.ChipsCount)) throw new InvalidOperationException("Ты не можешь фишек больше поставить чем у тебя есть");
+            bet = m_bet;
+        }
+
+        public void ChangeBet(Bet changedBet)
+        {
+            if (currentGame.isStarted)
             {
-                if (bet.GetOwner().Id == this.Id) return true;
+                throw new InvalidOperationException("Нельзя поменять ставку в игре которая уже началась");
             }
-            return false;
+            bet = changedBet;
         }
     }
 }

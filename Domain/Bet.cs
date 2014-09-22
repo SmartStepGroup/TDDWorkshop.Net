@@ -9,22 +9,17 @@ namespace Tests
 {
     public class Bet
     {
-        private Player owner;
         public int DiceValue;
         public int ChipsCount;
-        public Guid Id;
 
-        public Bet(Player player, int diceValue, int chipsCount)
+        public Bet()
         {
-            Id = new Guid();
-            owner = player;
+            
+        }
+        public Bet(int diceValue, int chipsCount)
+        {
             DiceValue = diceValue;
             ChipsCount = chipsCount;
-        }
-
-        public Player GetOwner()
-        {
-            return owner;
         }
     }
 }

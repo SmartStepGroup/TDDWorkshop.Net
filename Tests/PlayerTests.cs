@@ -7,6 +7,11 @@ namespace Tests
     [TestFixture]
     public class PlayerTests : BaseTest
     {
+        [SetUp]
+        public void SetUp()
+        {
+            Create = new Father();
+        }
         [Test]
         public void EnterGame_Player_InGame()
         {
@@ -80,11 +85,10 @@ namespace Tests
         [Test]
         public void DoBet_Player_MayWin()
         {
-            var player = new Player();
-            var game = new Game();
-            player.Enter(game);
+            Game game = Create.Game;
+            Player player = Create.Player.In(game);
 
-            game.DoBet(CreateBet(player));
+            player.DoBet(CreateBet());
 
             Assert.IsTrue(player.HasBets());
         }
@@ -97,44 +101,89 @@ namespace Tests
             player.Enter(game);
             player.Exit();
 
-            Assert.Throws<InvalidOperationException>(() => game.DoBet(CreateBet(player))).WithMessage("Нельзя делать ставки не находясь в игре");
+            Assert.Throws<InvalidOperationException>(() => player.DoBet(CreateBet())).WithMessage("Нельзя делать ставки не находясь в игре");
         }
 
         [Test]
         public void DoRightBets_Player_DoBet()
         {
-            var player = new Player();
-            var game = new Game();
+            Player player = new Player();
+            Game game = new Game();
             player.Enter(game);
 
-            Assert.Throws<InvalidOperationException>(() => game.DoBet(CreateBet(player, diceValue: 7))).WithMessage("Значение ставки должно быть от 1 до 6");
+            Assert.Throws<InvalidOperationException>(() => player.DoBet(CreateBet(diceValue: 7))).WithMessage("Значение ставки должно быть от 1 до 6");
         }
 
         [Test]
         public void NotEnoughChips_Player_DoBet()
         {
-            var player = new Player();
-            var game = new Game();
-            player.Enter(game);
+            Game game = Create.Game.Started();
+            Player player = Create.Player.In(game).WithChips(3);
 
-            player.BuyChips(3);
-
-            Assert.Throws<InvalidOperationException>(() => game.DoBet(CreateBet(player, diceValue: 1, chipCount: 5))).WithMessage("Ты не можешь фишек больше поставить чем у тебя есть");
+            Assert.Throws<InvalidOperationException>(() => player.DoBet(5.Chips().On(1))).WithMessage("Ты не можешь фишек больше поставить чем у тебя есть");
         }
 
         [Test]
         public void ChangeBetBegoreStartingGame_Player_ChangeBet()
         {
-            var player = new Player();
-            var game = new Game();
+            Game game = Create.Game.Started();
+            Player player = Create.Player.In(game).WithChips(100.Chips()).WithBet(CreateBet());
+            Bet changedBet = 50.Chips().On(1);
+
+            Assert.Throws<InvalidOperationException>(() => player.ChangeBet(changedBet)).WithMessage("Нельзя поменять ставку в игре которая уже началась");
+        }
+
+        private static Father Create;
+    }
+
+    public class Father
+    {
+        public GameFather Game = new GameFather();
+        public PlayerFather Player = new PlayerFather();
+    }
+
+
+    public class PlayerFather
+    {
+        private Player player = new Player();
+
+        public PlayerFather In(Game game)
+        {
             player.Enter(game);
-            Bet bet = CreateBet(player);
-            game.DoBet(bet);
-            game.Start();
+            return this;
+        }
 
-            Bet changedBet = CreateBet(player, diceValue:2);
+        public static implicit operator Player(PlayerFather father)
+        {
+            return father.player;
+        }
 
-            Assert.Throws<InvalidOperationException>(() => game.ChangeBet(bet.Id, changedBet)).WithMessage("Нельзя поменять ставку в игре которая уже началась");
+        public PlayerFather WithBet(Bet bet)
+        {
+            player.DoBet(bet);
+            return this;
+        }
+
+        public PlayerFather WithChips(int chipsCount)
+        {
+            player.BuyChips(chipsCount);
+            return this;
+        }
+    }
+
+    public class GameFather
+    {
+        private Game game = new Game();
+
+        public GameFather Started()
+        {
+            game.isStarted = true;
+            return this;
+        }
+
+        public static implicit operator Game(GameFather father)
+        {
+            return father.game;
         }
     }
 
@@ -150,9 +199,9 @@ namespace Tests
             return new Player();
         }
 
-        public Bet CreateBet(Player player, int diceValue = 1, int chipCount = 0)
+        public Bet CreateBet(int diceValue = 1, int chipCount = 0)
         {
-            return new Bet(player, diceValue, chipCount);
+            return new Bet(diceValue, chipCount);
         }
     }
 
@@ -188,6 +237,19 @@ namespace Tests
         public static void WithMessage(this Exception e, string expectedMessage)
         {
             Assert.AreEqual(expectedMessage, e.Message);
+        }
+    }
+
+    public static class IntExtensions
+    {
+        public static int Chips(this int chips)
+        {
+            return chips;
+        }
+
+        public static Bet On(this int chips, int score)
+        {
+            return new Bet(diceValue: score, chipsCount: chips);
         }
     }
 }
