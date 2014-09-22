@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Domain;
 using NUnit.Framework;
 
@@ -16,7 +17,7 @@ namespace Tests
         protected DiceGame DiceBoard;
         protected Player Anna;
 
-        private void CreateDefaultBoardAndAnna(int coins)
+        private void CreateDefaultBoardAndAnna(int coins = 0)
         {
             DiceBoard = Create.DiceGame;
             Anna = Create.Player
@@ -28,9 +29,9 @@ namespace Tests
         [Test]
         public void Can_SinglePlayer_BuyCoins()
         {
-            CreateDefaultBoardAndAnna(0);
+            CreateDefaultBoardAndAnna();
             Anna.BuyCoins(1);
-            Assert.IsTrue(1 == Anna.GetAvailableCoins());
+            Assert.AreEqual(1, Anna.GetAvailableCoins());
         }
 
         [Test]
@@ -38,8 +39,8 @@ namespace Tests
         {
             CreateDefaultBoardAndAnna(1000);
             Anna.Enter(DiceBoard);
-            Anna.MakeBet(2, 10);
-            Anna.MakeBet(3, 20);
+            Anna.MakeBet(2.Edge(), 10.Coins());
+            Anna.MakeBet(3.Edge(), 20.Coins());
             Anna.CancelAllBets();
             Assert.IsFalse(Anna.HasAnyBet());
         }
@@ -47,17 +48,17 @@ namespace Tests
         [Test]
         public void CannotEnter_SinglePlayer_TwoGames()
         {
-            CreateDefaultBoardAndAnna(0);
+            CreateDefaultBoardAndAnna();
             Anna.Enter(DiceBoard);
             var game2 = new DiceGame();
             Assert.Throws<InvalidOperationException>(() => Anna.Enter(game2));
         }
 
         [Test]
-        public void EnterGame_PlayerNotInGame_MultiplayerGame()
+        public void EnterGame_SecondPlayerNotInGame_SecondPlayerInGame()
         {
-            CreateDefaultBoardAndAnna(0);
-            var Belle = new Player();
+            CreateDefaultBoardAndAnna();
+            Player Belle = Create.Player;
             Anna.Enter(DiceBoard);
             Belle.Enter(DiceBoard);
             Assert.IsTrue(Belle.IsIn(DiceBoard));
@@ -66,7 +67,7 @@ namespace Tests
         [Test]
         public void EntersGame_SinglePlayer_InGame()
         {
-            CreateDefaultBoardAndAnna(0);
+            CreateDefaultBoardAndAnna();
             Anna.Enter(DiceBoard);
             Assert.IsTrue(Anna.IsIn(DiceBoard));
         }
@@ -74,14 +75,14 @@ namespace Tests
         [Test]
         public void ExitGame_PlayerNotInGame_ThrowsException()
         {
-            CreateDefaultBoardAndAnna(0);
+            CreateDefaultBoardAndAnna();
             Assert.Throws<InvalidOperationException>(Anna.Exit);
         }
 
         [Test]
         public void ExitGame_Player_NotInGame()
         {
-            CreateDefaultBoardAndAnna(0);
+            CreateDefaultBoardAndAnna();
             Anna.Enter(DiceBoard);
             Anna.Exit();
             Assert.IsFalse(Anna.IsIn(DiceBoard));
@@ -90,80 +91,68 @@ namespace Tests
         [Test]
         public void MakeBet_DiceGame_Succeeded()
         {
-            CreateDefaultBoardAndAnna(1000);
+            CreateDefaultBoardAndAnna(1000.Coins());
             Anna.Enter(DiceBoard);
-            Anna.MakeBet(3, 1);
-            Assert.IsTrue(DiceBoard.BetsBank() == 1);
+            Anna.MakeBet(3.Edge(), 1.Coins());
+            Assert.AreEqual(DiceBoard.BetsBank(), 1);
         }
 
         [Test]
         public void MakeBet_Exceed6_ThrowsException()
         {
-            CreateDefaultBoardAndAnna(1000);
+            CreateDefaultBoardAndAnna(1000.Coins());
             Anna.Enter(DiceBoard);
-            Assert.Throws<ArgumentException>(() => Anna.MakeBet(7, 3));
+            Assert.Throws<ArgumentException>(() => Anna.MakeBet(7.Edge(), 3.Coins()));
         }
 
         [Test]
         public void MakeBet_RoundBegin_ThrowsException()
         {
-            CreateDefaultBoardAndAnna(1000);
+            CreateDefaultBoardAndAnna(1000.Coins());
             Anna.Enter(DiceBoard);
             DiceBoard.BeginRound();
 
-            Assert.Throws<InvalidOperationException>(() => Anna.MakeBet(3, 1));
+            Assert.Throws<InvalidOperationException>(() => Anna.MakeBet(3.Edge(), 1.Coins()));
         }
 
         [Test]
         public void MakeBet_ZeroRoll_ThrowsException()
         {
-            CreateDefaultBoardAndAnna(1000);
+            CreateDefaultBoardAndAnna(1000.Coins());
             Anna.Enter(DiceBoard);
 
-            Assert.Throws<ArgumentException>(() => Anna.MakeBet(0, 3));
+            Assert.Throws<ArgumentException>(() => Anna.MakeBet(0.Edge(), 3.Coins()));
+        }
+
+        [Test]
+        public void MakeBet_Roll_LooseBet()
+        {
+            CreateDefaultBoardAndAnna(1000.Coins());
+            IDice dice = Create.UnluckyDice;
+            Anna.Enter(DiceBoard);
+
+            Anna.MakeBet(1.Edge(), 100.Coins());
+            DiceBoard.BeginRound();
+
+            Assert.AreNotEqual(DiceBoard.Roll(dice), 1.Edge());
+        }
+
+
+    }
+
+    public static class CoinsExtension
+    {
+        public static int Coins(this int value)
+        {
+            return value;
         }
     }
 
-    public class Builder
+    public static class DiceExtension
     {
-        public Builder()
+        public static int Edge(this int value)
         {
-            DiceGame = new DiceGameBuilder();
-            Player = new PlayerBuilder();
-        }
-
-        public DiceGameBuilder DiceGame { get; private set; }
-        public PlayerBuilder Player { get; private set; }
-    }
-
-    public class PlayerBuilder
-    {
-        private readonly Player player = new Player();
-        private int coins;
-
-        public PlayerBuilder BuyCoins(int new_coins)
-        {
-            coins += new_coins;
-            return this;
-        }
-
-        public static implicit operator Player(PlayerBuilder builder)
-        {
-            if (builder.coins > 0)
-            {
-                builder.player.BuyCoins(builder.coins);
-            }
-            return builder.player;
-        }
-    }
-
-    public class DiceGameBuilder
-    {
-        private readonly DiceGame game = new DiceGame();
-
-        public static implicit operator DiceGame(DiceGameBuilder builder)
-        {
-            return builder.game;
+            return value;
         }
     }
 }

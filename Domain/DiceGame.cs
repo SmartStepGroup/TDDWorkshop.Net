@@ -36,5 +36,10 @@ namespace Domain
         {
             inProgress = false;
         }
+
+        public int Roll(IDice Dice)
+        {
+            return Dice.Roll();
+        }
     }
 }
