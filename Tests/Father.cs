@@ -13,6 +13,10 @@ namespace Tests {
     }
 
     public class GameFather {
+        public static implicit operator Game(GameFather father)
+        {
+            return new Game();
+        }
     }
 
     public class PlayerFather {
