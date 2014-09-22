@@ -161,16 +161,17 @@ namespace Tests
         [Test]
         public void Player_CanCanceledBetBeforeGameStarted()
         {
+            Game game1 = new Game();
             Player captainJackSparrow = Create.Player
                 .WithBalance(100)
-                .WithGame(CreateGame())
+                .WithGame(game1)
                 .WithBet(15.On(3));
                 
 
-            var game = captainJackSparrow.GetGame();
+           // game = captainJackSparrow.GetGame();
 
             captainJackSparrow.DeleteBet();
-            game.Start();
+          //  game.Start();
 
             Assert.Null(captainJackSparrow.GetListBet());
         }
