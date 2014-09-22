@@ -10,6 +10,7 @@ namespace Domain
     {
         protected bool inProgress = false;
         protected const int winnerFactor = 6;
+
         public override bool CanJoin(Player player)
         {
             return players.Count < 6;
@@ -47,8 +48,14 @@ namespace Domain
                 {
                     bet.player.TakeWinCoins(bet.coins*winnerFactor);
                 }
+                else
+                {
+                    this.Casino.AcquireCoinsFromLoosedBet(bet.coins);
+                }
             }
             return roll;
         }
+
+        public Casino Casino { get; set; }
     }
 }

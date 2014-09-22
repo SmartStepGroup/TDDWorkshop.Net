@@ -54,6 +54,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Builder.cs" />
+    <Compile Include="CasinoBuilder.cs" />
     <Compile Include="DiceGameBuilder.cs" />
     <Compile Include="DiceGameTests.cs" />
     <Compile Include="PlayerBuilder.cs" />

@@ -19,7 +19,7 @@ namespace Tests
 
         private void CreateDefaultBoardAndAnna(int coins = 0)
         {
-            DiceBoard = Create.DiceGame;
+            DiceBoard = Create.DiceGame.In(Create.Casino);
             Anna = Create.Player
                 .BuyCoins(coins);
         }
@@ -167,8 +167,21 @@ namespace Tests
             Assert.AreEqual(firstCoins-betAmount +betAmount* winnerFactor, Anna.GetAvailableCoins());
         }
 
+        [Test]
+        public void MakeBet_Casino_GotCoins()
+        {
+            int initialBalance = 100;
+            int bet = 50;
+            CreateDefaultBoardAndAnna(initialBalance.Coins());
+            IDice dice = Create.UnluckyDice;
+            Anna.Enter(DiceBoard);
+            Anna.MakeBet(1.Edge(), bet.Coins());
+            DiceBoard.BeginRound();
 
+            int edge = DiceBoard.Roll(dice);
 
+            Assert.AreEqual(bet, DiceBoard.Casino.Balance);
+        }
     }
 
     public static class CoinsExtension

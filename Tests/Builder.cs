@@ -12,6 +12,7 @@ namespace Tests
         {
             DiceGame = new DiceGameBuilder();
             Player = new PlayerBuilder();
+            Casino = new CasinoBuilder();
             UnluckyDice = A.Fake<IDice>();
             A.CallTo(() => UnluckyDice.Roll()).Returns(unlucky_roll);
             LuckyDice = A.Fake<IDice>();
@@ -22,5 +23,6 @@ namespace Tests
         public PlayerBuilder Player { get; private set; }
         public IDice UnluckyDice { get; private set; }
         public IDice LuckyDice { get; private set; }
+        public CasinoBuilder Casino { get; private set; }
     }
 }
