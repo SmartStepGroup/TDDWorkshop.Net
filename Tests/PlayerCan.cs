@@ -5,11 +5,7 @@ using Tests;
 
 namespace Tests {
     [TestFixture]
-    public class PlayerCan : CasinoTest  {
-        [SetUp]
-        public void setup() {
-            Create = new Father();
-        }
+    public class PlayerCan : Test  {
 
         [Test]
         public void byDefaultPlayerHasNotGame() {
@@ -72,7 +68,7 @@ namespace Tests {
                 .With(cheaps: 20)
                 .In(game);
 
-            player.bets(11.Chips().On(1));
+            player.bets(11.Chips().On(2));
 
             Assert.AreEqual(11, player.getBetAmount());
         }
@@ -83,7 +79,7 @@ namespace Tests {
 
     public static class ExceptionExtentions {
         public static void MessageIs(this Exception exception, string expectedMessage) {
-
+            Assert.AreEqual(expectedMessage, exception.Message);
         }
     }
     

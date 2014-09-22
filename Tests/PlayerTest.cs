@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace Tests {
     [TestFixture]
-    public class PlayerTest : CasinoTest {
+    public class PlayerTest : Test {
         [Test]
         public void GameExit_ExitsWhenHas4Players_Has3Players()
         {
