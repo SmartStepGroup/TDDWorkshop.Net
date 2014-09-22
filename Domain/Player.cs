@@ -45,5 +45,9 @@ namespace Domain {
         public void bets(Bet bet) {
             this.bet = bet;
         }
+
+        public void play() {
+            chipsCount -= bet.Amount;
+        }
     }
 }

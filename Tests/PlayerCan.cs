@@ -73,6 +73,20 @@ namespace Tests {
             Assert.AreEqual(11, player.getBetAmount());
         }
 
+        [Test]
+        public void looseWhenBets2() {
+            Game game = Create.Game;
+            Player player = Create.Player
+                .With(cheaps: 20)
+                .In(game)
+                .Bets(11.Chips().On(2));
+
+            player.play();
+
+            Assert.AreEqual(20 - 11, player.getChipsCount());
+        }
+
+             
         
 
     }

@@ -25,11 +25,13 @@ namespace Tests {
     public class PlayerFather {
         private Game game;
         private int chipsCount;
+        private Bet bet;
 
         public static implicit operator Player(PlayerFather father) {
             var player = new Player();
             if (father.game != null) player.setActiveGame(father.game);
             if (father.chipsCount != null) player.byeChips(father.chipsCount);
+            if (father.bet != null) player.bets(father.bet);
 
             return player;
         }
@@ -41,6 +43,11 @@ namespace Tests {
 
         public PlayerFather With(int cheaps = 5) {
             this.chipsCount = cheaps;
+            return this;
+        }
+
+        public PlayerFather Bets(Bet bet) {
+            this.bet = bet;
             return this;
         }
     }
