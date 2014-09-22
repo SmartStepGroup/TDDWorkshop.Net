@@ -116,9 +116,10 @@ namespace Tests
         [Test]
         public void Player_CanNotWrongBetLessOne_ThrowsException()
         {
-            var captainJackSparrow = CreatePlayerWithBet(25, 0);
-            Bet bet = captainJackSparrow.GetListBet()[0];
-            var ex = Assert.Throws<InvalidOperationException>(() => captainJackSparrow.Do(bet));
+         //   var captainJackSparrow = new Player();
+           // var captainJackSparrow = CreatePlayerWithBet(25, 0);
+           // Bet bet = captainJackSparrow.GetListBet()[0];
+            var ex = Assert.Throws<InvalidOperationException>(() => CreatePlayerWithBet(25, 0));
             Assert.AreEqual("Ставка не может быть меньше 1", ex.Message);
         }
 
@@ -129,15 +130,17 @@ namespace Tests
             var game = CreateGame();
             captainJackSparrow.EnterTo(game);
             var bet = new Bet(size, score);
+            captainJackSparrow.Do(bet);
+           
             return captainJackSparrow;
         }
 
         [Test]
         public void Player_CanNotWrongBetMoreSix_ThrowsException()
         {
-            var captainJackSparrow = CreatePlayerWithBet(25, 7);
-            Bet bet = captainJackSparrow.GetListBet()[0];
-            var ex = Assert.Throws<InvalidOperationException>(() => captainJackSparrow.Do(bet));
+          //  var captainJackSparrow = CreatePlayerWithBet(25, 7);
+          //  Bet bet = captainJackSparrow.GetListBet()[0];
+            var ex = Assert.Throws<InvalidOperationException>(() => CreatePlayerWithBet(25, 7));
             Assert.AreEqual("Ставка не может быть больше 6", ex.Message);
         }
 
@@ -169,10 +172,11 @@ namespace Tests
         {
             var captainJackSparrow = CreatePlayerWithBet(25, 5);
             var game = captainJackSparrow.GetGame();
-
+            captainJackSparrow.Do(new Bet(10,4));
+            captainJackSparrow.Do(new Bet(12, 3));
             game.Start();
 
-            Assert.Null(captainJackSparrow.GetListBet());
+            Assert.IsTrue(captainJackSparrow.GetListBet().Count > 1);
         }
 
     }
