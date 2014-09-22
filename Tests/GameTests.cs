@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using NUnit.Framework;
 using Tests.DSL;
 
@@ -33,7 +33,7 @@ namespace Tests
             player6.Enter(game);
 
             var e = Assert.Throws<InvalidOperationException>(() => player7.Enter(game));
-            Assert.AreEqual("В игре число игроков максимальное, юный падован", e.Message);
+            Assert.AreEqual("Р’ РёРіСЂРµ С‡РёСЃР»Рѕ РёРіСЂРѕРєРѕРІ РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ, СЋРЅС‹Р№ РїР°РґРѕРІР°РЅ", e.Message);
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace Tests
             Game game = Create.Game;
             Player player = Create.Player.In(game).WithChips(100);
 
-            Assert.Throws<InvalidOperationException>(() => game.Start(player)).WithMessage("Нельзя начать игру без ставок");
+            Assert.Throws<InvalidOperationException>(() => game.Start(player)).WithMessage("РќРµР»СЊР·СЏ РЅР°С‡Р°С‚СЊ РёРіСЂСѓ Р±РµР· СЃС‚Р°РІРѕРє");
         }
     }
 }
