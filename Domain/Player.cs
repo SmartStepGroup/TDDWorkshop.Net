@@ -21,14 +21,11 @@ namespace Domain {
             return activeGame;
         }
 
-        public void enter(Game game) {
-        }
-
-        public void exit(Game game) {
+        public void exit() {
             if (getActiveGame() == null) {
                 throw new InvalidOperationException("Нельзя выйти из игры, если в неё не входил");
             }
-            game.removePlayer();
+            activeGame.removePlayer();
             activeGame = null;
          }
 

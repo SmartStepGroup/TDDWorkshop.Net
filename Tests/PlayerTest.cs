@@ -18,7 +18,7 @@ namespace Tests {
             player3.setActiveGame(game);
             player4.setActiveGame(game);
 
-            player4.exit(game);
+            player4.exit();
 
             Assert.IsTrue(game.getPlayersCount() == 3);
         }

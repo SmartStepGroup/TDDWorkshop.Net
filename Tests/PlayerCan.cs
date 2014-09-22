@@ -25,11 +25,12 @@ namespace Tests {
 
         [Test]
         public void ExitGame() {
-            Player player = CreatePlayer();
             Game game = CreateGame();
-            player.setActiveGame(game);
+            Player player = Create.Player.In(game);
 
-            player.exit(game);
+//            player.setActiveGame(game);
+
+            player.exit();
 
             Assert.IsNull(player.getActiveGame());
         }
@@ -65,5 +66,13 @@ namespace Tests {
 
             Assert.IsTrue(player.getChipsCount() == 11);
         }
+
+        protected Father Create = new Father();
+
+
+
     }
 }
+
+
+    
