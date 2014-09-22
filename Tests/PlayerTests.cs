@@ -133,27 +133,28 @@ namespace Tests
 
             Assert.Throws<InvalidOperationException>(() => player.ChangeBet(changedBet)).WithMessage("Нельзя поменять ставку в игре которая уже началась");
         }
-    }
 
-
-    public static class ExteptionExtensions
-    {
-        public static void WithMessage(this Exception e, string expectedMessage)
+        [Test]
+        public void BetIsWrong_Player_Lose()
         {
-            Assert.AreEqual(expectedMessage, e.Message);
+            Game game = Create.Game.WithLuckyScore(6);
+            Player player = Create.Player.In(game).WithChips(100).WithBet(80.Chips().On(1));
+
+            game.Start(player);
+
+            Assert.AreEqual(20, player.AvailibleChipsCount());
+        }
+
+        [Test]
+        public void BetIsRight_Player_Winx6()
+        {
+            Game game = Create.Game.WithLuckyScore(6);
+            Player player = Create.Player.In(game).WithChips(100).WithBet(40.Chips().On(6));
+
+            game.Start(player);
+
+            Assert.AreEqual(300, player.AvailibleChipsCount());
         }
     }
 
-    public static class IntExtensions
-    {
-        public static int Chips(this int chips)
-        {
-            return chips;
-        }
-
-        public static Bet On(this int chips, int score)
-        {
-            return new Bet(diceValue: score, chipsCount: chips);
-        }
-    }
 }

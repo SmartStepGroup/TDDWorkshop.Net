@@ -1,3 +1,5 @@
+using FakeItEasy;
+
 namespace Tests.DSL
 {
     public class GameFather
@@ -6,7 +8,17 @@ namespace Tests.DSL
 
         public GameFather Started()
         {
-            game.isStarted = true;
+            game.Start();
+            return this;
+        }
+
+        public GameFather WithLuckyScore(int luckyScore)
+        {
+            game.luckyScore = luckyScore;
+            var cheatDice = A.Fake<IDice>();
+            A.CallTo(() => cheatDice.Roll()).Returns(luckyScore);
+            game.dice = cheatDice;
+
             return this;
         }
 

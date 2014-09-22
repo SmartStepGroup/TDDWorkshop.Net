@@ -62,6 +62,7 @@ namespace Tests
             if (m_bet.DiceValue < 1 || m_bet.DiceValue > 6) throw new InvalidOperationException("Значение ставки должно быть от 1 до 6");
             if (!CanDoBets(m_bet.ChipsCount)) throw new InvalidOperationException("Ты не можешь фишек больше поставить чем у тебя есть");
             bet = m_bet;
+            chipsCount -= m_bet.ChipsCount;
         }
 
         public void ChangeBet(Bet changedBet)
@@ -71,6 +72,16 @@ namespace Tests
                 throw new InvalidOperationException("Нельзя поменять ставку в игре которая уже началась");
             }
             bet = changedBet;
+        }
+
+        public int AvailibleChipsCount()
+        {
+            return chipsCount;
+        }
+
+        public Bet GetBet()
+        {
+            return bet;
         }
     }
 }
