@@ -137,6 +137,37 @@ namespace Tests
             Assert.AreNotEqual(DiceBoard.Roll(dice), 1.Edge());
         }
 
+        [Test]
+        public void MakeCorrectBet_Player_Wins()
+        {
+            CreateDefaultBoardAndAnna(100.Coins());
+            IDice dice = Create.LuckyDice;
+          
+            Anna.Enter(DiceBoard);
+            int betAmount = 10;
+            Anna.MakeBet(6.Edge(),betAmount.Coins());
+            DiceBoard.BeginRound();
+            Assert.AreEqual(6,DiceBoard.Roll(dice));
+        }
+
+
+        [Test]
+        public void MakeCorrectBet_Player_Wins6Times()
+        {
+            int firstCoins = 100;
+            CreateDefaultBoardAndAnna(firstCoins.Coins());
+            IDice dice = Create.LuckyDice;
+            int winnerFactor = 6;
+            Anna.Enter(DiceBoard);
+            int betAmount = 10;
+            Anna.MakeBet(6.Edge(), betAmount.Coins());
+            DiceBoard.BeginRound();
+            DiceBoard.Roll(dice);
+
+            Assert.AreEqual(firstCoins-betAmount +betAmount* winnerFactor, Anna.GetAvailableCoins());
+        }
+
+
 
     }
 

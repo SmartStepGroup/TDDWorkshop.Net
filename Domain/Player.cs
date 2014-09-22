@@ -60,6 +60,11 @@ namespace Domain
         {
             return false;
         }
+
+        public void TakeWinCoins(int i)
+        {
+            this.coins += i;
+        }
     }
 
 }

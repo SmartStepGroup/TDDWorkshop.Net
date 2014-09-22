@@ -9,6 +9,7 @@ namespace Domain
     public class DiceGame:Game
     {
         protected bool inProgress = false;
+        protected const int winnerFactor = 6;
         public override bool CanJoin(Player player)
         {
             return players.Count < 6;
@@ -39,7 +40,15 @@ namespace Domain
 
         public int Roll(IDice Dice)
         {
-            return Dice.Roll();
+            int roll = Dice.Roll();
+            foreach (var bet in bets)
+            {
+                if (bet.roll == roll)
+                {
+                    bet.player.TakeWinCoins(bet.coins*winnerFactor);
+                }
+            }
+            return roll;
         }
     }
 }
