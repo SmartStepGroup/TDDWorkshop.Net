@@ -191,10 +191,44 @@ namespace Tests
             Assert.IsTrue(captainJackSparrow.GetListBet().Count > 1);
         }
 
-      
+        [Test]
+        public void Player_LoseOneBet()
+        {
+            var game = CreateGame();
+            Player looser = Create.Player
+                .WithBalance(150)
+                .WithBet(15.On(1))
+                .WithGame(game);
+            game.Start();
+            Assert.AreNotEqual(game.GetResult(), looser.GetListBet()[0].GetScore());
+        }
 
-        
-        public Father Create = new Father();
+        [Test]
+        public void Player_WinWithOneBet()
+        {
+            var game = CreateGame();
+            
+            Player winner = Create.Player
+                .WithBalance(150)
+                .WithBet(15.On(6))
+                .WithGame(game);
+            int BeforeBalance = winner.GetBalance();
+            game.Start();
+            int BalanceResult = (BeforeBalance + (winner.GetListBet()[0].GetSize()*6));
+            Assert.AreEqual(winner.GetBalance() , BalanceResult);
+        }
+
+
+
+
+
+        [SetUp]
+        public void Init()
+        {
+           Create   = new Father();
+        }
+
+        public Father Create;
     }
 
     public static class IntExtend
@@ -215,10 +249,10 @@ namespace Tests
 
     public class Father
     {
-        public PlayerFather Player = new PlayerFather();
-
-
-
+        public PlayerFather Player
+        {
+            get { return new PlayerFather(); }
+        }
     }
 
     public class PlayerFather
@@ -247,5 +281,7 @@ namespace Tests
         {
             return father.player;
         }
+
+       
     }
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>FakeItEasy.Automocker</id>
+    <version>1.13.0</version>
+    <authors>myoon</authors>
+    <owners>myoon</owners>
+    <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
+    <projectUrl>https://github.com/mikeyoon/FakeItEasyAutoMocker</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>An automocker for FakeItEasy. Can mock concerete dependencies as well as interfaces.</description>
+    <releaseNotes>First release.</releaseNotes>
+    <copyright>Copyright 2013</copyright>
+    <tags>unittesting mocking mock fakes faking automock automocker</tags>
+    <dependencies>
+      <dependency id="FakeItEasy" version="1.13.0" />
+    </dependencies>
+  </metadata>
+</package>

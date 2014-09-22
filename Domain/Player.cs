@@ -12,7 +12,7 @@ namespace Domain
         public void EnterTo(Game game)
         {
             ValidateBeforeEnter(game);
-
+            game.AddPlayer(this);
             _activeGame = game;
             _activeGame.Join(this);
         }
@@ -52,6 +52,7 @@ namespace Domain
         {
             ValidateDoBet(bet);
             _activeBet.Add(bet);
+            _balance -= bet.GetSize();
         }
 
         private void ValidateDoBet(Bet bet)
@@ -77,6 +78,11 @@ namespace Domain
         public List<Bet> GetListBet()
         {
             return _activeBet;
+        }
+
+        public void AddChips(int size)
+        {
+            BuyChips(size);
         }
     }
 }
