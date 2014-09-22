@@ -164,7 +164,7 @@ namespace Tests
             Game game1 = new Game();
             Player captainJackSparrow = Create.Player
                 .WithBalance(100)
-                .WithGame(game1)
+             //   .WithGame(game1)
                 .WithBet(15.On(3));
                 
 
