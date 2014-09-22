@@ -244,6 +244,39 @@ namespace Tests
             Assert.AreEqual(Casino.GetBalance(), casinoBalanceBefore + looser.GetListBet()[0].GetSize());
         }
 
+        [Test]
+        public void Player_CanDoManyBetAndWin()
+        {
+            var casino = CreateCasino();
+            var game = CreateGame();
+            Player winner = Create.Player
+                .WithBalance(150)
+                .WithBet(15.On(1)).WithBet(15.On(2)).WithBet(15.On(3)).WithBet(15.On(4)).WithBet(15.On(5)).WithBet(15.On(6))
+                .WithGame(game);
+            
+
+            game.Start(casino);
+
+
+            Assert.AreEqual(150, winner.GetBalance());
+        }
+
+        [Test]
+        public void Player_CanDoManyBetOnOneScoreAndWin()
+        {
+            var game = CreateGame();
+            var casino = CreateCasino();
+            Player winner = Create.Player
+                .WithBalance(150)
+                .WithBet(20.On(1)).WithBet(20.On(1)).WithBet(30.On(3)).WithBet(40.On(4)).WithBet(10.On(6)).WithBet(10.On(6))
+                .WithGame(game);
+            
+          //  int beforeBalance = winner.GetBalance();
+
+            game.Start(casino);
+
+            Assert.AreEqual(150 - 20 - 20 - 30 - 40 -10 -10 + 10*6 + 10*6, winner.GetBalance());
+        }
 
 
         [SetUp]
