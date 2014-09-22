@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Dynamic;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using Domain;
 using NUnit.Framework;
 
@@ -13,6 +15,9 @@ namespace Tests {
         public void Setup() {
             player = new Player();
             game = new Game();
+            Create = new MainFather(new GameSon(), new PlayerSon());
+            
+
         }
 
         [Test]
@@ -126,7 +131,7 @@ namespace Tests {
             Assert.Throws<InvalidOperationException>(() => player.MakeBet(100,7)).WithMessage("Принимаются ставки от 1 до 6");
         }
 
-        [Test]
+        /*[Test]
         public void MakeBet_BetMoreThetAvailableChips_ThrowInvalidOperationException() {
             int betAmount = 110;
             player.Enter(game);
@@ -134,9 +139,7 @@ namespace Tests {
 
             Assert.Throws<InvalidOperationException>(() => player.MakeBet(betAmount, 1)).WithMessage("Недостаточно фишек для ставки");
         }
-        
-
-        /*[Test]
+        [Test]
         public void MakeBet_ChangeBetIfGameNoStart_ThrowInvalidOperationException() {
             int betAmount = 100;
             player.Enter(game);
@@ -147,7 +150,85 @@ namespace Tests {
 
             Assert.Throws<InvalidOperationException>(() => player.MakeBet(betAmount, 1)).WithMessage("Нельзя менять ставку когда игра запущена");
         }*/
+
+
+        [Test]
+        public void MakeBet_BetMoreThetAvailableChips_ThrowInvalidOperationException(){
+            int betAmount = 110;
+            Game dslGame = Create.Game;
+            Player dslPlayer = Create.Player
+                .In(dslGame)
+                .With(100.Chips())
+                .WithBet(100.Chips().On(1));
+            Assert.Throws<InvalidOperationException>(() => dslPlayer.MakeBet(betAmount, 1)).WithMessage("Недостаточно фишек для ставки");
+        }
+
+        public MainFather Create { get; private set; }
+
+        
     }
+
+
+    public class MainFather {
+        public MainFather(GameSon game, PlayerSon player) {
+            Player = player;
+            Game = game;
+        }
+
+        public GameSon Game { get; private set; }
+        public PlayerSon Player { get; private set; }
+    }
+
+    public class GameSon {
+        private Game game = new Game();
+        public static implicit operator Game(GameSon gameSon)
+        {
+            return new Game();
+        }
+    }
+
+    public class PlayerSon {
+        private Player player = new Player();
+        public PlayerSon In(Game game) {
+            player.Enter(game);
+            return this;
+        }
+
+        public PlayerSon With(int chips) {
+            player.BuyChips(chips);
+            return this;
+        }
+
+        public PlayerSon WithBet(Bet bet) {
+            player.MakeBet(bet.Chips, bet.Score);
+            return this;
+        }
+
+        public static implicit operator Player(PlayerSon playerSon) {
+            return playerSon.player;
+        }
+    }
+
+    public class Bet {
+        public Bet(int chips, int score) {
+            Score = score;
+            Chips = chips;
+        }
+        public int Chips { get; private set; }
+        public int Score { get; private set; }
+    }
+
+    public static class IntExtension {
+        public static int Chips(this int chips) {
+            return chips;
+        }
+
+        public static Bet On(this int chips, int face) {
+            return new Bet(chips,face);
+        }
+    }
+   
+
     public static class ExceptionExceptions{
         public static void WithMessage(this Exception ex, string message)
         {
