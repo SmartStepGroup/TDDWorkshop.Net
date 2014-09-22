@@ -2,13 +2,16 @@ using Domain;
 
 namespace Tests {
     public class Father {
-        public PlayerFather Player { get; private set; }
+        public PlayerFather Player {
+            get {
+                return new PlayerFather();
+            }
+        }
     
-        public GameFather Game  { get; private set; }
-
-        public Father() {
-            Player = new PlayerFather();
-            Game = new GameFather();
+        public GameFather Game  {
+            get {
+                return new GameFather();
+            }
         }
     }
 

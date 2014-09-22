@@ -5,6 +5,10 @@ using NUnit.Framework;
 namespace Tests {
     [TestFixture]
     public class PlayerCan : Test {
+        [SetUp]
+        public void setup() {
+            Create = new Father();
+        }
 
         [Test]
         public void byDefaultPlayerHasNotGame() {
@@ -45,10 +49,11 @@ namespace Tests {
         public void playWhenOthersPlayerInGame() {
             Game game = Create.Game;
             Player firstPlayer = Create.Player.In(game);
-            Player secondPlayer = Create.Player.In(game);
+            Player secondPlayer = Create.Player;
 
+            secondPlayer.setActiveGame(game);
 
-            Assert.IsTrue(secondPlayer.getActiveGame() == game);
+            Assert.AreSame(game, secondPlayer.getActiveGame());
         }
 
         [Test]
