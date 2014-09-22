@@ -65,11 +65,18 @@ namespace Domain
             }
             this.bet = chips;
             this.face = face;
+            this.chips -= chips;
         }
 
         public int getBet()
         {
             return bet;
+        }
+
+        public void playGame()
+        {
+            chips+=activeGame.play(bet, face);
+            bet = 0;
         }
     }
 }

@@ -1,4 +1,5 @@
 using Domain;
+using FakeItEasy;
 
 namespace Tests.DSL
 {
@@ -32,6 +33,28 @@ namespace Tests.DSL
         {
             game = new Game();
             player.enterGame(game);
+            return this;
+        }
+
+        public Casino Chips(int i)
+        {
+            player.buyChips(i);
+            return this;
+        }
+
+        public Casino makeBet(int face, int chips)
+        {
+            player.makeBet(face, chips);
+            return this;
+        }
+
+        public Casino enterWinningGame()
+        {
+            
+            var game = A.Fake<Game>();
+            A.CallTo(() => game.play(100,6)).Returns(600);
+            player.enterGame(game);
+            
             return this;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Domain;
+using FakeItEasy;
 using NUnit.Framework;
 using Tests.DSL;
 
@@ -155,9 +156,34 @@ namespace Tests
         }
 
         [Test]
-        public void MakeBet_PlayerNoChips_ThrowsInvalidOperationException()
+        public void PlayLooserGame_Player_LoseBet()
         {
+            Player player = new Casino().Player().enterGame().Chips(100).makeBet(4,100);
+
+            player.playGame();
+
+            Assert.AreEqual(0, player.getBet());
+        }
+
+        [Test]
+        public void MakeBet_Player_LessChips()
+        {
+            Player player = new Casino().Player().enterGame().Chips(100);
             
+            player.makeBet(6, 100);
+
+            Assert.AreEqual(0, player.chipsCount());
+        }
+
+        
+        [Test]
+        public void PlayWinningGame_Player_WinSixBets()
+        {
+            Player player = new Casino().Player().enterWinningGame().Chips(100).makeBet(6,100);
+            
+            player.playGame();
+            
+            Assert.AreEqual(100*6, player.chipsCount());
         }
     }
 }
