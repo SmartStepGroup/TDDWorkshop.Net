@@ -150,12 +150,18 @@ namespace Tests
         [Test]
         public void Player_CanChangeBetBeforeGameStarted()
         {
+            var casino = CreateCasino();
             var captainJackSparrow = CreatePlayerWithBet(25, 5);
             var game = captainJackSparrow.GetGame();
             captainJackSparrow.GetListBet()[0].Change(56, 1, game);
-            game.Start();
+            game.Start(casino);
 
             Assert.AreEqual(1, captainJackSparrow.GetListBet()[0].GetScore());
+        }
+
+        private Casino CreateCasino()
+        {
+            return new Casino();
         }
 
         [Test]
@@ -179,6 +185,7 @@ namespace Tests
         [Test]
         public void Player_CanAddSomeBet()
         {
+            var casino = CreateCasino();
             Player captainJackSparrow = Create.Player
                  .WithBalance(100)
                  .WithGame(CreateGame())
@@ -186,7 +193,7 @@ namespace Tests
             
             captainJackSparrow.Do(new Bet(10,4));
             captainJackSparrow.Do(new Bet(12, 3));
-            captainJackSparrow.GetGame().Start();
+            captainJackSparrow.GetGame().Start(casino);
 
             Assert.IsTrue(captainJackSparrow.GetListBet().Count > 1);
         }
@@ -194,12 +201,13 @@ namespace Tests
         [Test]
         public void Player_LoseOneBet()
         {
+            var casino = CreateCasino();
             var game = CreateGame();
             Player looser = Create.Player
                 .WithBalance(150)
                 .WithBet(15.On(1))
                 .WithGame(game);
-            game.Start();
+            game.Start(casino);
             Assert.AreNotEqual(game.GetResult(), looser.GetListBet()[0].GetScore());
         }
 
@@ -207,18 +215,34 @@ namespace Tests
         public void Player_WinWithOneBet()
         {
             var game = CreateGame();
-            
+            var casino = CreateCasino();
             Player winner = Create.Player
                 .WithBalance(150)
                 .WithBet(15.On(6))
                 .WithGame(game);
-            int BeforeBalance = winner.GetBalance();
-            game.Start();
-            int BalanceResult = (BeforeBalance + (winner.GetListBet()[0].GetSize()*6));
-            Assert.AreEqual(winner.GetBalance() , BalanceResult);
+            int beforeBalance = winner.GetBalance();
+
+            game.Start(casino);
+            int balanceResult = (beforeBalance + (winner.GetListBet()[0].GetSize()*6));
+            Assert.AreEqual(winner.GetBalance() , balanceResult);
         }
 
+        [Test]
+        public void Casino_Win_PlayersBet()
+        {
+            var casino = CreateCasino();
+            var game = CreateGame();
+            Player looser = Create.Player
+                .WithBalance(150)
+                .WithBet(15.On(1))
+                .WithGame(game);
+            int casinoBalanceBefore = Casino.GetBalance();
 
+            game.Start(casino);
+
+
+            Assert.AreEqual(Casino.GetBalance(), casinoBalanceBefore + looser.GetListBet()[0].GetSize());
+        }
 
 
 
@@ -226,6 +250,7 @@ namespace Tests
         public void Init()
         {
            Create   = new Father();
+           
         }
 
         public Father Create;

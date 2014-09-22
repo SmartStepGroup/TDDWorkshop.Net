@@ -19,7 +19,7 @@ namespace Domain
             return _IsStart;
         }
 
-        public void Start()
+        public void Start(Casino casino)
         {
             _IsStart = true;
             _result = GetGenerateResult();
@@ -29,6 +29,10 @@ namespace Domain
                 {
                     if (_result == bet.GetScore())
                     player.AddChips(bet.GetSize()*6);
+                    else
+                    {
+                        casino.AddChips(bet.GetSize());
+                    }
                 }
             }
         }
