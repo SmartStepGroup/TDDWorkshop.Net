@@ -2,7 +2,6 @@
 using System.Runtime.Remoting.Messaging;
 using Domain;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
 namespace Tests
 {
@@ -159,13 +158,9 @@ namespace Tests
         }
 
         [Test]
-        public void Player_CanCanceledBetBeforeGameStarted()
+        public void Player_CanCancelledBetBeforeGameStarted()
         {
-            Player captainJackSparrow = Create.Player
-                .WithBalance(100)
-                .WithGame(CreateGame())
-                .WithBet(15.On(3));
-                
+            var captainJackSparrow = CreatePlayerWithBet(25, 5);
 
             var game = captainJackSparrow.GetGame();
 
@@ -178,22 +173,30 @@ namespace Tests
         [Test]
         public void Player_CanAddSomeBet()
         {
-            Player captainJackSparrow = Create.Player
-                 .WithBalance(100)
-                 .WithGame(CreateGame())
-                 .WithBet(15.On(3));
-            
+            var captainJackSparrow = CreatePlayerWithBet(25, 5);
+            var game = captainJackSparrow.GetGame();
             captainJackSparrow.Do(new Bet(10,4));
             captainJackSparrow.Do(new Bet(12, 3));
-            captainJackSparrow.GetGame().Start();
+            game.Start();
 
             Assert.IsTrue(captainJackSparrow.GetListBet().Count > 1);
         }
 
-      
+        [Test]
+        public void test_Test()
+        {
+            //var game = CreateGame();
+            //var player = Create.Player
+            //    .WithGame(game)
+            //    .WithBalance(100)
+            //    .WithBet(15.On(4));
+            int a = "5".ToInt();
+
+            Assert.IsTrue(a == 5);
+        }
 
         
-        public Father Create = new Father();
+        public Father Create { get; private set; }
     }
 
     public static class IntExtend
@@ -214,10 +217,7 @@ namespace Tests
 
     public class Father
     {
-        public PlayerFather Player = new PlayerFather();
-
-
-
+        public PlayerFather Player { get; set; }
     }
 
     public class PlayerFather
@@ -240,11 +240,6 @@ namespace Tests
         {
             player.Do(bet);
             return this;
-        }
-
-        public static implicit operator Player(PlayerFather father)
-        {
-            return father.player;
         }
     }
 }
