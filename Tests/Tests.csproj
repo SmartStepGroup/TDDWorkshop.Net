@@ -50,6 +50,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DSL\Casino.cs" />
+    <Compile Include="DSL\ExceptionExtensions.cs" />
     <Compile Include="PlayerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
