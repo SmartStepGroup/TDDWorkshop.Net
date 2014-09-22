@@ -41,8 +41,9 @@ namespace Tests {
             Player player = Create.Player.In(firstGame);
             Game secondGame = Create.Game;
 
-            var e = Assert.Throws<InvalidOperationException>(() => { player.setActiveGame(secondGame); });
-            Assert.IsTrue(e.Message.Equals("Можно играть только в одну игру одновременно"));
+            Assert
+                .Throws<InvalidOperationException>(() => player.setActiveGame(secondGame))
+                .MessageIs("Можно играть только в одну игру одновременно");
         }
 
         [Test]
@@ -63,8 +64,36 @@ namespace Tests {
             Assert.AreEqual(11, player.getChipsCount());
         }
 
+        [Test]
+        public void bet11Chips() {
+            Game game = Create.Game;
+            Player player = Create.Player
+                .With(cheaps: 20)
+                .In(game);
+
+            player.bets(11.Chips().On(1));
+
+            Assert.AreEqual(11, player.getBetAmount());
+        }
+
         protected Father Create = new Father();
 
+    }
+
+    public static class ExceptionExtentions {
+        public static void MessageIs(this Exception exception, string expectedMessage) {
+
+        }
+    }
+    
+    public static class IntExtentions {
+        public static Bet Chips(this int amount) {
+            return new Bet(amount, 1);
+        }
+        
+        public static Bet On(this Bet bet, int score) {
+            return new Bet(bet.Amount, score);
+        }
     }
 }
 

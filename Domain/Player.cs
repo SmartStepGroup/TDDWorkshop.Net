@@ -4,6 +4,7 @@ namespace Domain {
     public class Player {
         private Game activeGame;
         private int chipsCount;
+        private Bet bet;
 
         public bool inGame(Game game) {
             return true;
@@ -35,6 +36,14 @@ namespace Domain {
 
         public void byeChips(int count) {
             chipsCount += count;
+        }
+
+        public int getBetAmount() {
+            return bet.Amount;
+        }
+
+        public void bets(Bet bet) {
+            this.bet = bet;
         }
     }
 }
