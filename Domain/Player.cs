@@ -6,6 +6,7 @@ namespace Domain
     {
         private Game activeGame;
         private int chips = 0;
+        private int face;
         private int bet;
 
         public bool isInGame()
@@ -43,24 +44,32 @@ namespace Domain
             return chips;
         }
 
-        public int betCount()
+        public int getFace()
         {
-            return bet;
+            return face;
         }
 
-        public void makeBet(int i)
+        public void makeBet(int face, int chips)
         {
             if (activeGame == null)
             {
                 throw new InvalidOperationException("Чтобы далить ставки нужно чтобы игрок был в игре");    
             }
-            if (i < 1 || i > 6) 
+            if (face < 1 || face > 6) 
             {
                 throw new InvalidOperationException("Ставка должна быть от 1 до 6");
             }
+            if (chips > chipsCount())
+            {
+                throw new InvalidOperationException("Ставка превышает количество фишек");
+            }
+            this.bet = chips;
+            this.face = face;
+        }
 
-
-            bet = i;
+        public int getBet()
+        {
+            return bet;
         }
     }
 }
