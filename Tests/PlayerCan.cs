@@ -1,10 +1,11 @@
 ﻿using System;
 using Domain;
 using NUnit.Framework;
+using Tests;
 
 namespace Tests {
     [TestFixture]
-    public class PlayerCan : Test {
+    public class PlayerCan : CasinoTest  {
         [SetUp]
         public void setup() {
             Create = new Father();
@@ -76,7 +77,7 @@ namespace Tests {
             Assert.AreEqual(11, player.getBetAmount());
         }
 
-        protected Father Create = new Father();
+        
 
     }
 

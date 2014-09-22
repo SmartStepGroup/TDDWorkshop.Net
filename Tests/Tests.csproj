@@ -52,6 +52,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="CasinoTest.cs" />
     <Compile Include="Father.cs" />
     <Compile Include="GameCanNot.cs" />
     <Compile Include="PlayerTest.cs" />

@@ -4,11 +4,11 @@ using NUnit.Framework;
 
 namespace Tests {
     [TestFixture]
-    public class PlayerTest : Test {
+    public class PlayerTest : CasinoTest {
         [Test]
         public void GameExit_ExitsWhenHas4Players_Has3Players()
         {
-            Game game = CreateGame();
+            Game game = Create.Game;
             Player player1 = CreatePlayer();
             Player player2 = CreatePlayer();
             Player player3 = CreatePlayer();
@@ -22,5 +22,6 @@ namespace Tests {
 
             Assert.IsTrue(game.getPlayersCount() == 3);
         }
+
     }
 }
