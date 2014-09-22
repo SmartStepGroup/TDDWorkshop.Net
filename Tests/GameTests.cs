@@ -1,24 +1,27 @@
 ﻿using System;
+using System.Dynamic;
 using Domain;
 using NUnit.Framework;
 
 namespace Tests {
-    [TestFixture]
-    public class GameTests {
-        private Player player;
-        private Game game;
-
+    public abstract class Test {
+        protected MainFather Create;
         [SetUp]
         public void Setup() {
-            player = new Player();
-            game = new Game();
+            Create = new MainFather();
         }
+    }
 
+    [TestFixture]
+    public class GameTests : Test {
         [Test]
         public void ByDefault_NoPlayersInGame() {
+            Game game = Create.Game;
             bool hasPlayers = game.HasPlayers();
             Assert.IsFalse(hasPlayers);
         }
+        
+
 
         
     }
