@@ -33,5 +33,12 @@ namespace Tests {
             this.game = game;
             return this;
         }
+
+        public PlayerFather With(int cheaps)
+        {
+            var player = new Player();
+            player.byeChips(cheaps);
+            return this;
+        }
     }
 }
