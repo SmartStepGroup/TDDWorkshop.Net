@@ -43,6 +43,14 @@ namespace Tests {
         }
 
         [Test]
+        public void Exit_PlayerNotInGame_ThrowsInvalidOperationException2() {
+            var player = new Player();
+
+            var e = Assert.Throws<InvalidOperationException>(player.Exit);
+            Assert.AreEqual("Нельзя выйти из игры, не войдя", e.Message);
+        }
+
+        [Test]
         public void ByDefault_HasNoChipsAvailable() {
             var player = new Player();
 
